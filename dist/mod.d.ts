@@ -1,23 +1,25 @@
-export interface SuperActionParamsInterface {
+export type { SuperActionParamsInterface, SuperActionEventInterface, SuperActionInterface };
+export { SuperActionEvent, SuperAction };
+interface SuperActionParamsInterface {
     host: ParentNode;
     eventNames: string[];
     connected?: boolean;
 }
-export interface SuperActionInterface {
+interface SuperActionInterface {
     connect(): void;
     disconnect(): void;
 }
-export interface SuperActionEventInterface extends Event {
+interface SuperActionEventInterface extends Event {
     action: string;
     sourceEvent: Event;
 }
-export declare class SuperAction {
+declare class SuperAction {
     #private;
     constructor(params: SuperActionParamsInterface);
     connect(): void;
     disconnect(): void;
 }
-export declare class SuperActionEvent extends Event implements SuperActionEvent {
+declare class SuperActionEvent extends Event implements SuperActionEvent {
     #private;
     constructor(action: string, sourceEvent: Event);
     get action(): string;

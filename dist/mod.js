@@ -1,4 +1,5 @@
-export class SuperAction {
+export { SuperActionEvent, SuperAction };
+class SuperAction {
     #params;
     constructor(params) {
         this.#params = params;
@@ -18,7 +19,7 @@ export class SuperAction {
         }
     }
 }
-export class SuperActionEvent extends Event {
+class SuperActionEvent extends Event {
     #action;
     #sourceEvent;
     constructor(action, sourceEvent) {
