@@ -1,6 +1,7 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
+        "declaration": false,
         "paths": {
             "superaction": [
                 "../dist/mod.d.ts"
