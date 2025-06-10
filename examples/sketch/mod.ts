@@ -5,7 +5,6 @@ const _superAction = new SuperAction({
     connected: true,
     eventNames: [
         "input",
-        "change",
         "pointerdown",
         "pointerup",
         "pointermove",
