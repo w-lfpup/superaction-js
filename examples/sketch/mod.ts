@@ -21,32 +21,32 @@ worker.postMessage({
 }, [offscreenCanvas]);
 
 addEventListener("#action", function (e: Event) {
-    if (!(e instanceof SuperActionEvent)) return;
+    if (e instanceof SuperActionEvent) {
+        let { action, target, sourceEvent } = e;
 
-    let { action, target, sourceEvent } = e;
-
-    if ("set_color" === action) {
-        if (target instanceof HTMLInputElement) {
-            worker.postMessage({
-                action,
-                color: target.value,
-            })
+        if ("set_color" === action) {
+            if (target instanceof HTMLInputElement) {
+                worker.postMessage({
+                    action,
+                    color: target.value,
+                })
+            }
         }
-    }
 
-    sendPointerMessage(action, sourceEvent);
+        sendPointerMessage(action, sourceEvent);
+    }
 });
 
 function sendPointerMessage(action: string, e: Event) {
-    if (!(e instanceof PointerEvent)) return;
+    if (e instanceof PointerEvent) {
+        let { x, y, movementX, movementY} = e;
 
-    let { x, y, movementX, movementY} = e;
-
-    worker.postMessage({
-        action,
-        x,
-        y,
-        movementX,
-        movementY,
-    });
+        worker.postMessage({
+            action,
+            x,
+            y,
+            movementX,
+            movementY,
+        });
+    }
 }

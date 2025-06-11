@@ -1,4 +1,4 @@
-export type { SuperActionParamsInterface, SuperActionEventInterface, SuperActionInterface};
+export type { SuperActionParamsInterface, SuperActionEventInterface, SuperActionInterface };
 export { SuperActionEvent, SuperAction };
 
 interface SuperActionParamsInterface {
@@ -26,14 +26,14 @@ class SuperAction {
 	}
 
 	connect() {
-		let {host, eventNames} = this.#params;
+		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
 			host.addEventListener(name, dispatchSuperAction);
 		}
 	}
 
 	disconnect() {
-		let {host, eventNames} = this.#params;
+		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
 			host.removeEventListener(name, dispatchSuperAction);
 		}

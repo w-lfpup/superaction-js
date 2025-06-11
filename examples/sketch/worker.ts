@@ -26,6 +26,7 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
     if ("lift_pen" === data.action) {
     }
 
-    if ("move_pen" === data.action) {
+    if ("move_pen_across_canvas" === data.action) {
+        // if pressed?
     }
 });
