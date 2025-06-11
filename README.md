@@ -31,10 +31,9 @@ the element with the `_event` attribute.
 ## Listen
 
 ```js
-document.addEventListener("#action", (e) => {
-    let {target} = e; // button
-
+addEventListener("#action", (e) => {
     let {action} = e;
+
     if ("decrement" === action) {
         // decrement something!
     }

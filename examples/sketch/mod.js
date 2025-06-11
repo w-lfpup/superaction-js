@@ -13,31 +13,32 @@ const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas");
 const offscreenCanvas = canvas.transferControlToOffscreen();
 worker.postMessage({
-    kind: "setup_canvas",
+    action: "setup_canvas",
     offscreenCanvas
 }, [offscreenCanvas]);
 addEventListener("#action", function (e) {
     if (!(e instanceof SuperActionEvent))
         return;
     let { action, target, sourceEvent } = e;
-    if ("update_color" === action) {
+    if ("set_color" === action) {
         if (target instanceof HTMLInputElement) {
+            worker.postMessage({
+                action,
+                color: target.value,
+            });
         }
     }
-    if ("press_pen" === action) {
-        if (sourceEvent instanceof PointerEvent) {
-        }
-    }
-    if ("lift_pen" === action) {
-        if (sourceEvent instanceof PointerEvent) {
-        }
-    }
-    if ("move_pen" === action) {
-        if (sourceEvent instanceof PointerEvent) {
-        }
-    }
-    if ("move_pen_across_canvas" === action) {
-        if (sourceEvent instanceof PointerEvent) {
-        }
-    }
+    sendPointerMessage(action, sourceEvent);
 });
+function sendPointerMessage(action, e) {
+    if (!(e instanceof PointerEvent))
+        return;
+    let { x, y, movementX, movementY } = e;
+    worker.postMessage({
+        action,
+        x,
+        y,
+        movementX,
+        movementY,
+    });
+}
