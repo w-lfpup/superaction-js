@@ -18,12 +18,32 @@ const superAction = new SuperAction({
 });
 ```
 
-## Declarative Syntax
+## Declare
 
-Add an attribute with the pattern `_event=action`.
+Add an attribute with the pattern `_event=action`. The `#action` event will _always_ dispatch from
+the element with the `_event` attribute.
 
 ```html
 <button _click="decrement">-</button>
-<span count>42</span>
 <button _click="increment">+</button>
 ```
+
+## Listen
+
+```js
+addEventListener("#action", (e) => {
+    let {action} = e;
+
+    if ("decrement" === action) {
+        // decrement something!
+    }
+    
+    if ("increment" === action) {
+        // increment something!
+    }
+});
+```
+
+## License
+
+`Wctk` is released under the BSD-3 Clause License.

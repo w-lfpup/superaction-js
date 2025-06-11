@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" >
+		<meta name="viewport" content="width=device-width, initial-scale=1" >
+        <style>
+            :root {
+                background-color: #d3d3d3;
+            }
+
+            canvas {
+                background-color: white;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "superaction": "../../dist/mod.js"
+                }
+            }
+        </script>
+		<script type="module" src="./mod.js"></script>
+	</head>
+	<body
+        _pointerdown="press_pen"
+        _pointerup="lift_pen"
+        _pointermove="move_pen"
+    >
+        <input
+            type="color"
+            _input="set_color"
+            _pointerup_stop-propagation
+            _pointerdown_stop-propagation
+        >
+		<canvas
+            _pointermove="move_pen_across_canvas"
+            _pointermove_stop-propagation
+        ></canvas>
+	</body>
+</html>
