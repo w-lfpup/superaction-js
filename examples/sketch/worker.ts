@@ -1,4 +1,4 @@
-import type { Actions, CanvasParams, PenParams } from "./actions.ts";
+import type { Actions, CanvasParams } from "./actions.ts";
 
 let canvas: OffscreenCanvas;
 let ctx: OffscreenCanvasRenderingContext2D | null;
@@ -12,7 +12,7 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
         canvas = data.offscreenCanvas;
         ctx = canvas.getContext("2d");
         if (ctx) {
-            ctx.lineWidth = 10;
+            ctx.lineWidth = 4;
             ctx.lineCap = "round";
         }
     }
@@ -45,7 +45,6 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
     }
 
     if ("lift_pen" === data.action) {
-        console.log("lifted the pen")
         pen_to_paper = false;
     }
 });

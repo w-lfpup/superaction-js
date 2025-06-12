@@ -41,9 +41,7 @@ function setupCanvas() {
 
 function sendCanvasParams() {
     let {top, left} = canvas.getBoundingClientRect();
-    top = Math.round(top);
-    left = Math.round(left);
-    console.log(canvas.getBoundingClientRect());
+    
     worker.postMessage({
         action: "set_canvas_params",
         params: { top, left },

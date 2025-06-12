@@ -49,4 +49,4 @@ type Actions = |
     PressPen |
     LiftPen;
 
-export { CanvasParams, Actions, PenParams }
+export { CanvasParams, Actions }

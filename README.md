@@ -44,6 +44,18 @@ addEventListener("#action", (e) => {
 });
 ```
 
+## Typescript
+
+I'm not trying to pollute your globals so I've you want to add `#action` events to you event listerner map?
+
+```ts
+declare global {
+  interface GlobalEventHandlersEventMap {
+    ["#action"]: SuperActionEvent;
+  }
+}
+```
+
 ## License
 
 `Wctk` is released under the BSD-3 Clause License.

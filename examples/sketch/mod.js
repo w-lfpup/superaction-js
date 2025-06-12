@@ -1,4 +1,4 @@
-import { SuperAction, SuperActionEvent } from "superaction";
+import { SuperAction } from "superaction";
 const _superAction = new SuperAction({
     host: document,
     connected: true,
@@ -13,18 +13,16 @@ const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas");
 const offscreenCanvas = canvas.transferControlToOffscreen();
 addEventListener("#action", function (e) {
-    if (e instanceof SuperActionEvent) {
-        let { action, target, sourceEvent } = e;
-        if ("set_color" === action) {
-            if (target instanceof HTMLInputElement) {
-                worker.postMessage({
-                    action,
-                    color: target.value,
-                });
-            }
+    let { action, target, sourceEvent } = e;
+    if ("set_color" === action) {
+        if (target instanceof HTMLInputElement) {
+            worker.postMessage({
+                action,
+                color: target.value,
+            });
         }
-        sendPointerMessage(action, sourceEvent);
     }
+    sendPointerMessage(action, sourceEvent);
 });
 function setupCanvas() {
     worker.postMessage({
@@ -34,8 +32,8 @@ function setupCanvas() {
 }
 function sendCanvasParams() {
     let { top, left } = canvas.getBoundingClientRect();
-    top = Math.round(top);
-    left = Math.round(left);
+    // top = Math.round(top);
+    // left = Math.round(left);
     console.log(canvas.getBoundingClientRect());
     worker.postMessage({
         action: "set_canvas_params",
