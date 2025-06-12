@@ -15,11 +15,6 @@ const worker = new Worker("worker.js", {type: "module"});
 const canvas = document.querySelector("canvas")!;
 const offscreenCanvas = canvas.transferControlToOffscreen();
 
-worker.postMessage({
-    action: "setup_canvas",
-    offscreenCanvas
-}, [offscreenCanvas]);
-
 addEventListener("#action", function (e: Event) {
     if (e instanceof SuperActionEvent) {
         let { action, target, sourceEvent } = e;
@@ -37,16 +32,34 @@ addEventListener("#action", function (e: Event) {
     }
 });
 
+function setupCanvas() {
+    worker.postMessage({
+        action: "setup_canvas",
+        offscreenCanvas
+    }, [offscreenCanvas]);
+}
+
+function sendCanvasParams() {
+    let {top, left} = canvas.getBoundingClientRect();
+    top = Math.round(top);
+    left = Math.round(left);
+    console.log(canvas.getBoundingClientRect());
+    worker.postMessage({
+        action: "set_canvas_params",
+        params: { top, left },
+    });
+}
+
 function sendPointerMessage(action: string, e: Event) {
     if (e instanceof PointerEvent) {
         let { x, y, movementX, movementY} = e;
 
         worker.postMessage({
             action,
-            x,
-            y,
-            movementX,
-            movementY,
+            params: { movementX, movementY, x, y }
         });
     }
 }
+
+setupCanvas();
+sendCanvasParams();

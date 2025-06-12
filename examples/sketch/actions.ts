@@ -1,4 +1,9 @@
-interface PenAction {
+interface CanvasParams {
+    top: number;
+    left: number;
+}
+
+interface PenParams {
     x: number;
     y: number;
     movementX: number;
@@ -10,31 +15,38 @@ interface SetupCanvas {
     offscreenCanvas: OffscreenCanvas;
 }
 
+interface SetCanvasParams {
+    action: "set_canvas_params";
+    params: CanvasParams;
+}
+
 interface SetColor {
     action: "set_color";
     color: string;
 }
 
-interface MovePen extends PenAction {
+interface MovePen {
     action: "move_pen";
+    params: PenParams;
 }
 
-interface PressPen extends PenAction {
+interface PressPen {
     action: "press_pen";
+    params: PenParams;
 }
 
-interface LiftPen extends PenAction {
+interface LiftPen {
     action: "lift_pen";
+    params: PenParams;
 }
 
-interface MovePenAcrossCanvas extends PenAction {
-    action: "move_pen_across_canvas";
-}
 
-export type Actions = |
+type Actions = |
     SetupCanvas |
+    SetCanvasParams |
     SetColor |
     MovePen |
     PressPen |
-    LiftPen |
-    MovePenAcrossCanvas;
+    LiftPen;
+
+export { CanvasParams, Actions, PenParams }
