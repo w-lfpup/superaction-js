@@ -46,7 +46,7 @@ addEventListener("#action", (e) => {
 
 ## Typescript
 
-I'm not trying to pollute your globals so I've you want to add `#action` events to you event listerner map?
+I'm not trying to pollute your globals so if you want typed `#action` events, please add the following to your app somewhere thoughtful.
 
 ```ts
 declare global {
@@ -55,6 +55,12 @@ declare global {
   }
 }
 ```
+
+## Examples
+
+Here are some examples to demonstrate how easy it is to work with `superaction-js`:
+- a simple [counter](./examples/counter/)
+- a small [sketchpad](./examples/sketch/) using an offscreen canvas
 
 ## License
 
