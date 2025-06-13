@@ -28,6 +28,7 @@ resizeObserver.observe(canvas);
 addEventListener("#action", function (e: SuperActionEvent) {
     let { action, target, sourceEvent } = e;
 
+    // send actions to the offscreen canvas worker
     if ("set_color" === action) {
         if (target instanceof HTMLInputElement) {
             worker.postMessage({
@@ -37,6 +38,7 @@ addEventListener("#action", function (e: SuperActionEvent) {
         }
     }
 
+    // all other actions should be pointer actions
     sendPointerMessage(action, sourceEvent);
 });
 

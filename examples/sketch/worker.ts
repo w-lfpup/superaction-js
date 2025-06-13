@@ -18,7 +18,6 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
         canvas.height = data.params.height;
         canvasParams = data.params;
         if (ctx) {
-            console.log("setup canvas")
             ctx.lineWidth = 10;
             ctx.lineCap = "round";
         }
@@ -30,6 +29,22 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
 
     if ("press_pen" === data.action) {
         pen_to_paper = true;
+        if (ctx) {
+            // create first point
+            ctx.beginPath();
+            let {top, left} = canvasParams;
+            let {x, y} = data.params;
+
+            let dx = x - left;
+            let dy = y - top;
+
+            ctx.arc(dx, dy, ctx.lineWidth * 0.5, 0, 2 * Math.PI, true);
+            ctx.fill();
+            ctx.closePath();
+
+            // start a "line"
+            ctx.beginPath();
+        }
     }
 
     if ("move_pen" === data.action) {
@@ -40,7 +55,6 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
             let dx = x - left;
             let dy = y - top;
 
-            ctx.beginPath();
             ctx.moveTo(dx - movementX, dy - movementY);
             ctx.lineTo(dx, dy);
             ctx.stroke();
@@ -49,5 +63,7 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
 
     if ("lift_pen" === data.action) {
         pen_to_paper = false;
+        ctx?.closePath();
     }
 });
+
