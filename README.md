@@ -59,8 +59,8 @@ declare global {
 ## Examples
 
 Here are some examples to demonstrate how easy it is to work with `superaction-js`:
-- a simple [counter](./examples/counter/)
-- a small [sketchpad](./examples/sketch/) using an offscreen canvas
+- a simple [counter](https://w-lfpup.github.io/superaction-js/examples/counter/)
+- a small [sketchpad](https://w-lfpup.github.io/superaction-js/examples/sketch/) using an offscreen canvas
 
 ## License
 
