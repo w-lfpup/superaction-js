@@ -1,4 +1,4 @@
-import { SuperAction } from "superaction";
+import { SuperAction, SuperActionEvent } from "superaction";
 const _superAction = new SuperAction({
     host: document,
     connected: true,
@@ -7,6 +7,8 @@ const _superAction = new SuperAction({
 const countEl = document.querySelector("[count]");
 let count = parseFloat(countEl.textContent ?? "");
 addEventListener("#action", function (e) {
+    if (!(e instanceof SuperActionEvent))
+        return;
     let { action } = e;
     if ("increment" === action) {
         count += 1;

@@ -1,10 +1,5 @@
 export type { SuperActionParamsInterface, SuperActionEventInterface, SuperActionInterface };
 export { SuperActionEvent, SuperAction };
-declare global {
-    interface GlobalEventHandlersEventMap {
-        ["#action"]: SuperActionEvent;
-    }
-}
 interface SuperActionParamsInterface {
     host: ParentNode;
     eventNames: string[];

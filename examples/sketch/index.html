@@ -9,11 +9,19 @@
             }
 
             body {
-                min-height: 100dvh;
+                margin: 0;
+                display: grid;
+                grid-template-columns: 1fr min(80dvw, 80dvh) 1fr;
+                grid-template-rows: 1fr min(80dvw, 80dvh) 1fr;
+                block-size: 100dvh;
             }
 
             canvas {
                 background-color: white;
+                grid-column-start: 2;
+                grid-row-start: 2;
+                block-size: 100%;
+                inline-size: 100%;
             }
         </style>
         <script type="importmap">

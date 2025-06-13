@@ -11,14 +11,17 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
     if ("setup_canvas" === data.action) {
         canvas = data.offscreenCanvas;
         ctx = canvas.getContext("2d");
-        if (ctx) {
-            ctx.lineWidth = 4;
-            ctx.lineCap = "round";
-        }
     }
 
     if ("set_canvas_params" === data.action) {
+        canvas.width = data.params.width;
+        canvas.height = data.params.height;
         canvasParams = data.params;
+        if (ctx) {
+            console.log("setup canvas")
+            ctx.lineWidth = 10;
+            ctx.lineCap = "round";
+        }
     }
 
     if ("set_color" === data.action) {
@@ -37,8 +40,8 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
             let dx = x - left;
             let dy = y - top;
 
-            ctx.beginPath()
-            ctx.moveTo(dx - movementX, dy - movementY)
+            ctx.beginPath();
+            ctx.moveTo(dx - movementX, dy - movementY);
             ctx.lineTo(dx, dy);
             ctx.stroke();
         }

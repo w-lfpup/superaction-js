@@ -7,13 +7,16 @@ self.addEventListener("message", function (e) {
     if ("setup_canvas" === data.action) {
         canvas = data.offscreenCanvas;
         ctx = canvas.getContext("2d");
-        if (ctx) {
-            ctx.lineWidth = 4;
-            ctx.lineCap = "round";
-        }
     }
     if ("set_canvas_params" === data.action) {
+        canvas.width = data.params.width;
+        canvas.height = data.params.height;
         canvasParams = data.params;
+        if (ctx) {
+            console.log("setup canvas");
+            ctx.lineWidth = 10;
+            ctx.lineCap = "round";
+        }
     }
     if ("set_color" === data.action) {
         if (ctx)
