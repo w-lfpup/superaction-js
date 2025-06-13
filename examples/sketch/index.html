@@ -1,5 +1,9 @@
 <!doctype html>
-<html>
+<html
+    _pointerup="lift_pen"
+    _pointerdown="press_pen"
+    _pointermove="move_pen"
+>
 	<head>
 		<meta charset="utf-8" >
 		<meta name="viewport" content="width=device-width, initial-scale=1" >
@@ -8,8 +12,27 @@
                 background-color: #d3d3d3;
             }
 
+            body {
+                margin: 0;
+                display: grid;
+                grid-template-columns: 1fr min(80dvw, 80dvh) 1fr;
+                grid-template-rows: 1fr min(80dvw, 80dvh) 1fr;
+                block-size: 100dvh;
+            }
+
+            input {
+                grid-column-start: 1;
+                grid-row-start: 2;
+                align-self: flex-start;
+                justify-self: end;
+            }
+
             canvas {
                 background-color: white;
+                grid-column-start: 2;
+                grid-row-start: 2;
+                block-size: 100%;
+                inline-size: 100%;
             }
         </style>
         <script type="importmap">
@@ -21,20 +44,13 @@
         </script>
 		<script type="module" src="./mod.js"></script>
 	</head>
-	<body
-        _pointerdown="press_pen"
-        _pointerup="lift_pen"
-        _pointermove="move_pen"
-    >
+	<body>
         <input
             type="color"
             _input="set_color"
             _pointerup_stop-propagation
             _pointerdown_stop-propagation
         >
-		<canvas
-            _pointermove="move_pen_across_canvas"
-            _pointermove_stop-propagation
-        ></canvas>
+		<canvas></canvas>
 	</body>
 </html>

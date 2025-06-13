@@ -1,4 +1,4 @@
-import { SuperAction, SuperActionEvent } from "superaction";
+import { SuperAction } from "superaction";
 const _superAction = new SuperAction({
     host: document,
     connected: true,
@@ -12,14 +12,13 @@ const _superAction = new SuperAction({
 const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas");
 const offscreenCanvas = canvas.transferControlToOffscreen();
-worker.postMessage({
-    action: "setup_canvas",
-    offscreenCanvas
-}, [offscreenCanvas]);
+const resizeObserver = new ResizeObserver(function () {
+    sendCanvasParams();
+});
+resizeObserver.observe(canvas);
 addEventListener("#action", function (e) {
-    if (!(e instanceof SuperActionEvent))
-        return;
     let { action, target, sourceEvent } = e;
+    // send actions to the offscreen canvas worker
     if ("set_color" === action) {
         if (target instanceof HTMLInputElement) {
             worker.postMessage({
@@ -28,17 +27,31 @@ addEventListener("#action", function (e) {
             });
         }
     }
+    // all other actions should be pointer actions
     sendPointerMessage(action, sourceEvent);
 });
-function sendPointerMessage(action, e) {
-    if (!(e instanceof PointerEvent))
-        return;
-    let { x, y, movementX, movementY } = e;
+function setupCanvas() {
     worker.postMessage({
-        action,
-        x,
-        y,
-        movementX,
-        movementY,
+        action: "setup_canvas",
+        offscreenCanvas
+    }, [offscreenCanvas]);
+}
+function sendCanvasParams() {
+    let { top, left } = canvas.getBoundingClientRect();
+    let { clientWidth, clientHeight } = canvas;
+    worker.postMessage({
+        action: "set_canvas_params",
+        params: { top, left, width: clientWidth, height: clientHeight },
     });
 }
+function sendPointerMessage(action, e) {
+    if (e instanceof PointerEvent) {
+        let { x, y, movementX, movementY } = e;
+        worker.postMessage({
+            action,
+            params: { movementX, movementY, x, y }
+        });
+    }
+}
+setupCanvas();
+sendCanvasParams();
