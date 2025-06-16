@@ -1,17 +1,17 @@
 {
-	"name": "superaction",
-	"version": "0.1.0",
-	"description": "Html action events",
-	"type": "module",
-	"scripts": {
-		"build": "npx tsc --project ./src",
-		"build:examples": "npx tsc --project ./examples",
-		"format": "npx prettier ./ --write"
-	},
-	"devDependencies": {
-		"prettier": "^3.2.5",
-		"typescript": "^5.4.5"
-	},
-	"author": "wolfpup",
-	"license": "BSD-3-Clause"
+  "name": "superaction",
+  "version": "0.1.0",
+  "description": "Html action events",
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc --project ./src",
+    "build:examples": "npx tsc --project ./examples",
+    "format": "npx prettier ./ --write"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "author": "wolfpup",
+  "license": "BSD-3-Clause"
 }

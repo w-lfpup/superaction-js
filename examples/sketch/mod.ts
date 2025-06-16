@@ -7,67 +7,63 @@ declare global {
 }
 
 const _superAction = new SuperAction({
-    host: document,
-    connected: true,
-    eventNames: [
-        "input",
-        "pointerdown",
-        "pointerup",
-        "pointermove",
-    ],
+  host: document,
+  connected: true,
+  eventNames: ["input", "pointerdown", "pointerup", "pointermove"],
 });
 
-const worker = new Worker("worker.js", {type: "module"});
+const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas")!;
 const offscreenCanvas = canvas.transferControlToOffscreen();
 
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 
-
-
 addEventListener("#action", function (e: SuperActionEvent) {
-    let { action, target, sourceEvent } = e;
+  let { action, target, sourceEvent } = e;
 
-    // send actions to the offscreen canvas worker
-    if ("set_color" === action) {
-        if (target instanceof HTMLInputElement) {
-            worker.postMessage({
-                action,
-                color: target.value,
-            })
-        }
+  // send actions to the offscreen canvas worker
+  if ("set_color" === action) {
+    if (target instanceof HTMLInputElement) {
+      worker.postMessage({
+        action,
+        color: target.value,
+      });
     }
+  }
 
-    // all other actions should be pointer actions
-    sendPointerMessage(action, sourceEvent);
+  // all other actions should be pointer actions
+  sendPointerMessage(action, sourceEvent);
 });
 
 function setupCanvas() {
-    worker.postMessage({
-        action: "setup_canvas",
-        offscreenCanvas
-    }, [offscreenCanvas]);
+  worker.postMessage(
+    {
+      action: "setup_canvas",
+      offscreenCanvas,
+    },
+    [offscreenCanvas],
+  );
 }
 
 function sendCanvasParams() {
-    let {top, left} = canvas.getBoundingClientRect();
-    let {clientWidth, clientHeight} = canvas;
-    worker.postMessage({
-        action: "set_canvas_params",
-        params: { top, left, width: clientWidth, height: clientHeight },
-    });
+  let { top, left } = canvas.getBoundingClientRect();
+  let { clientWidth, clientHeight } = canvas;
+  worker.postMessage({
+    action: "set_canvas_params",
+    params: { top, left, width: clientWidth, height: clientHeight },
+  });
 }
 
 function sendPointerMessage(action: string, e: Event) {
-    if (e instanceof PointerEvent) {
-        let { x, y, movementX, movementY} = e;
+  if (e instanceof PointerEvent) {
+    let { x, y, movementX, movementY } = e;
 
-        worker.postMessage({
-            action,
-            params: { movementX, movementY, x, y }
-        });
-    }
+    worker.postMessage({
+      action,
+      params: { movementX, movementY, x, y },
+    });
+  }
 }
 
 setupCanvas();

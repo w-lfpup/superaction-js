@@ -18,9 +18,9 @@ The `SuperAction` below listens for `click` events. Event listeners are immediat
 import { SuperAction } from "superaction";
 
 const superAction = new SuperAction({
-    host: document,
-    connected: true,
-    eventNames: ["click"],
+  host: document,
+  connected: true,
+  eventNames: ["click"],
 });
 ```
 
@@ -30,23 +30,22 @@ Add an attribute with the pattern `_event=action`. The `#action` event will _alw
 the element with the `_event` attribute.
 
 ```html
-<button _click="decrement">-</button>
-<button _click="increment">+</button>
+<button _click="decrement">-</button> <button _click="increment">+</button>
 ```
 
 ## Listen
 
 ```js
 addEventListener("#action", (e) => {
-    let {action} = e;
+  let { action } = e;
 
-    if ("decrement" === action) {
-        // decrement something!
-    }
-    
-    if ("increment" === action) {
-        // increment something!
-    }
+  if ("decrement" === action) {
+    // decrement something!
+  }
+
+  if ("increment" === action) {
+    // increment something!
+  }
 });
 ```
 
@@ -65,6 +64,7 @@ declare global {
 ## Examples
 
 Here are some examples to demonstrate how easy it is to work with `SuperAction-js`:
+
 - a simple [counter](https://w-lfpup.github.io/superaction-js/examples/counter/)
 - a small [sketchpad](https://w-lfpup.github.io/superaction-js/examples/sketch/) using an offscreen canvas
 
