@@ -54,6 +54,8 @@ addEventListener("#action", (e) => {
 I'm not trying to pollute your globals so if you want typed `#action` events, please add the following to your app somewhere thoughtful.
 
 ```ts
+import { SuperActionEvent } from "superaction";
+
 declare global {
 	interface GlobalEventHandlersEventMap {
 		["#action"]: SuperActionEvent;
