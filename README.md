@@ -18,9 +18,9 @@ The `SuperAction` below listens for `click` events. Event listeners are immediat
 import { SuperAction } from "superaction";
 
 const superAction = new SuperAction({
-  host: document,
-  connected: true,
-  eventNames: ["click"],
+	host: document,
+	connected: true,
+	eventNames: ["click"],
 });
 ```
 
@@ -37,15 +37,15 @@ the element with the `_event` attribute.
 
 ```js
 addEventListener("#action", (e) => {
-  let { action } = e;
+	let { action } = e;
 
-  if ("decrement" === action) {
-    // decrement something!
-  }
+	if ("decrement" === action) {
+		// decrement something!
+	}
 
-  if ("increment" === action) {
-    // increment something!
-  }
+	if ("increment" === action) {
+		// increment something!
+	}
 });
 ```
 
@@ -55,9 +55,9 @@ I'm not trying to pollute your globals so if you want typed `#action` events, pl
 
 ```ts
 declare global {
-  interface GlobalEventHandlersEventMap {
-    ["#action"]: SuperActionEvent;
-  }
+	interface GlobalEventHandlersEventMap {
+		["#action"]: SuperActionEvent;
+	}
 }
 ```
 

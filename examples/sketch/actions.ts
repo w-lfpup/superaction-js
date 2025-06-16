@@ -1,53 +1,53 @@
 interface CanvasParams {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
+	top: number;
+	left: number;
+	width: number;
+	height: number;
 }
 
 interface PenParams {
-  x: number;
-  y: number;
-  movementX: number;
-  movementY: number;
+	x: number;
+	y: number;
+	movementX: number;
+	movementY: number;
 }
 
 interface SetupCanvas {
-  action: "setup_canvas";
-  offscreenCanvas: OffscreenCanvas;
+	action: "setup_canvas";
+	offscreenCanvas: OffscreenCanvas;
 }
 
 interface SetCanvasParams {
-  action: "set_canvas_params";
-  params: CanvasParams;
+	action: "set_canvas_params";
+	params: CanvasParams;
 }
 
 interface SetColor {
-  action: "set_color";
-  color: string;
+	action: "set_color";
+	color: string;
 }
 
 interface MovePen {
-  action: "move_pen";
-  params: PenParams;
+	action: "move_pen";
+	params: PenParams;
 }
 
 interface PressPen {
-  action: "press_pen";
-  params: PenParams;
+	action: "press_pen";
+	params: PenParams;
 }
 
 interface LiftPen {
-  action: "lift_pen";
-  params: PenParams;
+	action: "lift_pen";
+	params: PenParams;
 }
 
 type Actions =
-  | SetupCanvas
-  | SetCanvasParams
-  | SetColor
-  | MovePen
-  | PressPen
-  | LiftPen;
+	| SetupCanvas
+	| SetCanvasParams
+	| SetColor
+	| MovePen
+	| PressPen
+	| LiftPen;
 
 export type { CanvasParams, Actions };

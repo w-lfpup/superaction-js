@@ -1,9 +1,9 @@
 {
-  "compilerOptions": {
-    "lib": ["DOM", "ESNext"],
-    "declaration": true,
-    "strict": true,
-    "module": "nodenext",
-    "target": "esnext"
-  }
+	"compilerOptions": {
+		"lib": ["DOM", "ESNext"],
+		"declaration": true,
+		"strict": true,
+		"module": "nodenext",
+		"target": "esnext"
+	}
 }
