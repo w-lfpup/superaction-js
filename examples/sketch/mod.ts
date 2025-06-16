@@ -20,10 +20,11 @@ const _superAction = new SuperAction({
 const worker = new Worker("worker.js", {type: "module"});
 const canvas = document.querySelector("canvas")!;
 const offscreenCanvas = canvas.transferControlToOffscreen();
-const resizeObserver = new ResizeObserver(function() {
-    sendCanvasParams();
-})
+
+const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
+
+
 
 addEventListener("#action", function (e: SuperActionEvent) {
     let { action, target, sourceEvent } = e;

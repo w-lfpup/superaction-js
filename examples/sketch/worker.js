@@ -18,8 +18,11 @@ self.addEventListener("message", function (e) {
         }
     }
     if ("set_color" === data.action) {
-        if (ctx)
-            ctx.strokeStyle = data.color;
+        let { color } = data;
+        if (ctx) {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+        }
     }
     if ("press_pen" === data.action) {
         pen_to_paper = true;

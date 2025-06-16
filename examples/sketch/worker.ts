@@ -24,7 +24,11 @@ self.addEventListener("message", function(e: MessageEvent<Actions>) {
     }
 
     if ("set_color" === data.action) {
-        if (ctx) ctx.strokeStyle = data.color;
+        let {color} = data;
+        if (ctx) {
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+        }
     }
 
     if ("press_pen" === data.action) {
