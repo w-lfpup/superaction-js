@@ -30,7 +30,8 @@ Add an attribute with the pattern `_event=action`. The `#action` event will _alw
 the element with the `_event` attribute.
 
 ```html
-<button _click="decrement">-</button> <button _click="increment">+</button>
+<button _click="decrement">-</button>
+<button _click="increment">+</button>
 ```
 
 ## Listen
