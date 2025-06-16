@@ -2,6 +2,12 @@
 
 A hypertext extension to dispatch actions on events in the browser.
 
+## Install
+
+```sh
+npm install --save-dev https://github.com/w-lfpup/superaction-js
+```
+
 ## Setup
 
 Create a `SuperAction` instance with `eventNames` to dispatch `actions`.
@@ -58,10 +64,10 @@ declare global {
 
 ## Examples
 
-Here are some examples to demonstrate how easy it is to work with `superaction-js`:
+Here are some examples to demonstrate how easy it is to work with `SuperAction-js`:
 - a simple [counter](https://w-lfpup.github.io/superaction-js/examples/counter/)
 - a small [sketchpad](https://w-lfpup.github.io/superaction-js/examples/sketch/) using an offscreen canvas
 
 ## License
 
-`Wctk` is released under the BSD-3 Clause License.
+`SuperAction-js` is released under the BSD-3 Clause License.
