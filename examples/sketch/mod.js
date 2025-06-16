@@ -2,12 +2,7 @@ import { SuperAction } from "superaction";
 const _superAction = new SuperAction({
     host: document,
     connected: true,
-    eventNames: [
-        "input",
-        "pointerdown",
-        "pointerup",
-        "pointermove",
-    ],
+    eventNames: ["input", "pointerdown", "pointerup", "pointermove"],
 });
 const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas");
@@ -31,7 +26,7 @@ addEventListener("#action", function (e) {
 function setupCanvas() {
     worker.postMessage({
         action: "setup_canvas",
-        offscreenCanvas
+        offscreenCanvas,
     }, [offscreenCanvas]);
 }
 function sendCanvasParams() {
@@ -47,7 +42,7 @@ function sendPointerMessage(action, e) {
         let { x, y, movementX, movementY } = e;
         worker.postMessage({
             action,
-            params: { movementX, movementY, x, y }
+            params: { movementX, movementY, x, y },
         });
     }
 }

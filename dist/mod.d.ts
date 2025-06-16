@@ -1,4 +1,4 @@
-export type { SuperActionParamsInterface, SuperActionEventInterface, SuperActionInterface };
+export type { SuperActionParamsInterface, SuperActionEventInterface, SuperActionInterface, };
 export { SuperActionEvent, SuperAction };
 interface SuperActionParamsInterface {
     host: ParentNode;

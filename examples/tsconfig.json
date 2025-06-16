@@ -1,11 +1,9 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "declaration": false,
-        "paths": {
-            "superaction": [
-                "../dist/mod.d.ts"
-            ]
-        }
-    }
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"declaration": false,
+		"paths": {
+			"superaction": ["../dist/mod.d.ts"]
+		}
+	}
 }
