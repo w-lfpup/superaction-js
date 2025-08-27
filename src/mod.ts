@@ -19,14 +19,6 @@ export interface SuperActionInterface {
 	disconnect(): void;
 }
 
-interface DispatchParams {
-	sourceEvent: Event;
-	el: Element;
-	action: string;
-	composed: boolean;
-	formData?: FormData;
-}
-
 export class ActionEvent extends Event implements ActionEventInterface {
 	actionParams: ActionInterface;
 
