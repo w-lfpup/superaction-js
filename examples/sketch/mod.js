@@ -1,6 +1,6 @@
 import { SuperAction } from "superaction";
 const _superAction = new SuperAction({
-    host: document,
+    target: document,
     connected: true,
     eventNames: ["input", "pointerdown", "pointerup", "pointermove"],
 });
@@ -10,7 +10,8 @@ const offscreenCanvas = canvas.transferControlToOffscreen();
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 addEventListener("#action", function (e) {
-    let { action, target, sourceEvent } = e;
+    let { target } = e;
+    let { action, sourceEvent } = e.actionParams;
     // send actions to the offscreen canvas worker
     if ("set_color" === action) {
         if (target instanceof HTMLInputElement) {

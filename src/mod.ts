@@ -1,27 +1,41 @@
-export type {
-	SuperActionParamsInterface,
-	SuperActionEventInterface,
-	SuperActionInterface,
-};
-export { SuperActionEvent, SuperAction };
+export interface ActionInterface {
+	sourceEvent: Event;
+	action: string;
+	formData?: FormData;
+}
 
-interface SuperActionParamsInterface {
-	host: ParentNode;
+export interface ActionEventInterface extends Event {
+	actionParams: ActionInterface;
+}
+
+export interface SuperActionParamsInterface {
+	target: ParentNode;
 	eventNames: string[];
 	connected?: boolean;
 }
 
-interface SuperActionInterface {
+export interface SuperActionInterface {
 	connect(): void;
 	disconnect(): void;
 }
 
-interface SuperActionEventInterface extends Event {
-	action: string;
+interface DispatchParams {
 	sourceEvent: Event;
+	el: Element;
+	composed: boolean;
+	formData?: FormData;
 }
 
-class SuperAction {
+export class ActionEvent extends Event implements ActionEventInterface {
+	actionParams: ActionInterface;
+
+	constructor(actionParams: ActionInterface, eventInit?: EventInit) {
+		super("#action", eventInit);
+		this.actionParams = actionParams;
+	}
+}
+
+export class SuperAction implements SuperActionInterface {
 	#params: SuperActionParamsInterface;
 
 	constructor(params: SuperActionParamsInterface) {
@@ -30,61 +44,67 @@ class SuperAction {
 	}
 
 	connect() {
-		let { host, eventNames } = this.#params;
+		let { target, eventNames } = this.#params;
 		for (let name of eventNames) {
-			host.addEventListener(name, dispatchSuperAction);
+			target.addEventListener(name, dispatch);
 		}
 	}
 
 	disconnect() {
-		let { host, eventNames } = this.#params;
+		let { target, eventNames } = this.#params;
 		for (let name of eventNames) {
-			host.removeEventListener(name, dispatchSuperAction);
+			target.removeEventListener(name, dispatch);
 		}
 	}
 }
 
-class SuperActionEvent extends Event implements SuperActionEvent {
-	#action: string;
-	#sourceEvent: Event;
+export function dispatch(sourceEvent: Event) {
+	let { type, currentTarget, target } = sourceEvent;
+	if (!currentTarget) return;
 
-	constructor(action: string, sourceEvent: Event) {
-		super("#action", { bubbles: true, composed: true });
+	// I forget if a formdata element can be reused but important to find out
+	let formData: FormData | undefined;
+	if (target instanceof HTMLFormElement) formData = new FormData(target);
 
-		this.#action = action;
-		this.#sourceEvent = sourceEvent;
-	}
-
-	get action(): string {
-		return this.#action;
-	}
-
-	get sourceEvent(): Event {
-		return this.#sourceEvent;
-	}
-}
-
-function dispatchSuperAction(e: Event): void {
-	let kind = getEventAttr(e.type);
-	for (let node of e.composedPath()) {
+	for (let node of sourceEvent.composedPath()) {
 		if (node instanceof Element) {
-			let event = getSuperActionEvent(e, kind, node);
-			if (node.hasAttribute(`${kind}_prevent-default`)) e.preventDefault();
-			if (event) node.dispatchEvent(event);
-			if (node.hasAttribute(`${kind}_stop-propagation`)) return;
+			let kind = node.getAttribute(`${type}:`);
+			if (!kind) continue;
+
+			if (node.hasAttribute(`${type}:prevent-default`))
+				sourceEvent.preventDefault();
+
+			if (node.hasAttribute(`${type}:stop-immediate-propagation`)) return;
+
+			let composed = node.hasAttribute(`${type}:composed`);
+			dispatchActionEvent({
+				el: node,
+				sourceEvent,
+				composed,
+				formData,
+			});
+
+			if (node.hasAttribute(`${type}:stop-propagation`)) return;
 		}
 	}
 }
 
-function getEventAttr(eventType: string) {
-	return `_${eventType}`;
+function dispatchActionEvent(dispatchParams: DispatchParams) {
+	let actionParams = getActionParams(dispatchParams);
+	if (!actionParams) return;
+
+	let { el, composed } = dispatchParams;
+
+	let event = new ActionEvent(actionParams, { bubbles: true, composed });
+	el.dispatchEvent(event);
 }
 
-function getSuperActionEvent(
-	e: Event,
-	type: string,
-	el: Element,
-): Event | undefined {
-	let action = el.getAttribute(type);
-	if (action) return new SuperActionEvent(action, e);
+function getActionParams(
+	dispatchParams: DispatchParams,
+): ActionInterface | undefined {
+	let { el, sourceEvent, formData } = dispatchParams;
+	let { type } = sourceEvent;
+
+	let action = el.getAttribute(`${type}:`);
+	if (action) return { action, sourceEvent, formData };
 }
