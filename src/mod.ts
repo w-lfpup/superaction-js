@@ -22,6 +22,7 @@ export interface SuperActionInterface {
 interface DispatchParams {
 	sourceEvent: Event;
 	el: Element;
+	action: string;
 	composed: boolean;
 	formData?: FormData;
 }
@@ -62,14 +63,13 @@ export function dispatch(sourceEvent: Event) {
 	let { type, currentTarget, target } = sourceEvent;
 	if (!currentTarget) return;
 
-	// I forget if a formdata element can be reused but important to find out
 	let formData: FormData | undefined;
 	if (target instanceof HTMLFormElement) formData = new FormData(target);
 
 	for (let node of sourceEvent.composedPath()) {
 		if (node instanceof Element) {
-			let kind = node.getAttribute(`${type}:`);
-			if (!kind) continue;
+			let action = node.getAttribute(`${type}:`);
+			if (!action) continue;
 
 			if (node.hasAttribute(`${type}:prevent-default`))
 				sourceEvent.preventDefault();
@@ -77,34 +77,11 @@ export function dispatch(sourceEvent: Event) {
 			if (node.hasAttribute(`${type}:stop-immediate-propagation`)) return;
 
 			let composed = node.hasAttribute(`${type}:composed`);
-			dispatchActionEvent({
-				el: node,
-				sourceEvent,
-				composed,
-				formData,
-			});
+			
+			let event = new ActionEvent({ action, sourceEvent, formData }, { bubbles: true, composed });
+			node.dispatchEvent(event);
 
 			if (node.hasAttribute(`${type}:stop-propagation`)) return;
 		}
 	}
-}
-
-function dispatchActionEvent(dispatchParams: DispatchParams) {
-	let actionParams = getActionParams(dispatchParams);
-	if (!actionParams) return;
-
-	let { el, composed } = dispatchParams;
-
-	let event = new ActionEvent(actionParams, { bubbles: true, composed });
-	el.dispatchEvent(event);
-}
-
-function getActionParams(
-	dispatchParams: DispatchParams,
-): ActionInterface | undefined {
-	let { el, sourceEvent, formData } = dispatchParams;
-	let { type } = sourceEvent;
-
-	let action = el.getAttribute(`${type}:`);
-	if (action) return { action, sourceEvent, formData };
 }
