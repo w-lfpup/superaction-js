@@ -17,8 +17,8 @@ The `SuperAction` below listens for `click` events. Event listeners are immediat
 ```js
 import { SuperAction } from "superaction";
 
-const superAction = new SuperAction({
-	host: document,
+const _superAction = new SuperAction({
+	target: document,
 	connected: true,
 	eventNames: ["click"],
 });
@@ -30,15 +30,15 @@ Add an attribute with the pattern `_event=action`. The `#action` event will _alw
 the element with the `_event` attribute.
 
 ```html
-<button _click="decrement">-</button>
-<button _click="increment">+</button>
+<button click:="decrement">-</button>
+<button click:="increment">+</button>
 ```
 
 ## Listen
 
 ```js
 addEventListener("#action", (e) => {
-	let { action } = e;
+	let { action, sourceEvent } = e.actionParams;
 
 	if ("decrement" === action) {
 		// decrement something!
@@ -55,11 +55,11 @@ addEventListener("#action", (e) => {
 I'm not trying to pollute your globals so if you want typed `#action` events, please add the following to your app somewhere thoughtful.
 
 ```ts
-import { SuperActionEvent } from "superaction";
+import type { ActionEventInterface } from "superaction";
 
 declare global {
 	interface GlobalEventHandlersEventMap {
-		["#action"]: SuperActionEvent;
+		["#action"]: ActionEventInterface;
 	}
 }
 ```

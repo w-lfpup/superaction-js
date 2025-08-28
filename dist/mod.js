@@ -1,5 +1,11 @@
-export { SuperActionEvent, SuperAction };
-class SuperAction {
+export class ActionEvent extends Event {
+    actionParams;
+    constructor(actionParams, eventInit) {
+        super("#action", eventInit);
+        this.actionParams = actionParams;
+    }
+}
+export class SuperAction {
     #params;
     constructor(params) {
         this.#params = params;
@@ -7,52 +13,39 @@ class SuperAction {
             this.connect();
     }
     connect() {
-        let { host, eventNames } = this.#params;
+        let { target, eventNames } = this.#params;
         for (let name of eventNames) {
-            host.addEventListener(name, dispatchSuperAction);
+            target.addEventListener(name, dispatch);
         }
     }
     disconnect() {
-        let { host, eventNames } = this.#params;
+        let { target, eventNames } = this.#params;
         for (let name of eventNames) {
-            host.removeEventListener(name, dispatchSuperAction);
+            target.removeEventListener(name, dispatch);
         }
     }
 }
-class SuperActionEvent extends Event {
-    #action;
-    #sourceEvent;
-    constructor(action, sourceEvent) {
-        super("#action", { bubbles: true, composed: true });
-        this.#action = action;
-        this.#sourceEvent = sourceEvent;
-    }
-    get action() {
-        return this.#action;
-    }
-    get sourceEvent() {
-        return this.#sourceEvent;
-    }
-}
-function dispatchSuperAction(e) {
-    let kind = getEventAttr(e.type);
-    for (let node of e.composedPath()) {
+export function dispatch(sourceEvent) {
+    let { type, currentTarget, target } = sourceEvent;
+    if (!currentTarget)
+        return;
+    let formData;
+    if (target instanceof HTMLFormElement)
+        formData = new FormData(target);
+    for (let node of sourceEvent.composedPath()) {
         if (node instanceof Element) {
-            let event = getSuperActionEvent(e, kind, node);
-            if (node.hasAttribute(`${kind}_prevent-default`))
-                e.preventDefault();
-            if (event)
+            if (node.hasAttribute(`${type}:prevent-default`))
+                sourceEvent.preventDefault();
+            if (node.hasAttribute(`${type}:stop-immediate-propagation`))
+                return;
+            let action = node.getAttribute(`${type}:`);
+            if (action) {
+                let composed = node.hasAttribute(`${type}:composed`);
+                let event = new ActionEvent({ action, sourceEvent, formData }, { bubbles: true, composed });
                 node.dispatchEvent(event);
-            if (node.hasAttribute(`${kind}_stop-propagation`))
+            }
+            if (node.hasAttribute(`${type}:stop-propagation`))
                 return;
         }
     }
-}
-function getEventAttr(eventType) {
-    return `_${eventType}`;
-}
-function getSuperActionEvent(e, type, el) {
-    let action = el.getAttribute(type);
-    if (action)
-        return new SuperActionEvent(action, e);
 }

@@ -1,13 +1,13 @@
-import { SuperAction, SuperActionEvent } from "superaction";
+import { SuperAction, ActionEventInterface } from "superaction";
 
 declare global {
 	interface GlobalEventHandlersEventMap {
-		["#action"]: SuperActionEvent;
+		["#action"]: ActionEventInterface;
 	}
 }
 
 const _superAction = new SuperAction({
-	host: document,
+	target: document,
 	connected: true,
 	eventNames: ["input", "pointerdown", "pointerup", "pointermove"],
 });
@@ -19,8 +19,9 @@ const offscreenCanvas = canvas.transferControlToOffscreen();
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 
-addEventListener("#action", function (e: SuperActionEvent) {
-	let { action, target, sourceEvent } = e;
+addEventListener("#action", function (e: ActionEventInterface) {
+	let { target } = e;
+	let { action, sourceEvent } = e.actionParams;
 
 	// send actions to the offscreen canvas worker
 	if ("set_color" === action) {
