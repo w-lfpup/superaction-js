@@ -1,4 +1,4 @@
-interface CanvasParams {
+export interface CanvasParams {
 	top: number;
 	left: number;
 	width: number;
@@ -42,12 +42,10 @@ interface LiftPen {
 	params: PenParams;
 }
 
-type Actions =
+export type Actions =
 	| SetupCanvas
 	| SetCanvasParams
 	| SetColor
 	| MovePen
 	| PressPen
 	| LiftPen;
-
-export type { CanvasParams, Actions };
