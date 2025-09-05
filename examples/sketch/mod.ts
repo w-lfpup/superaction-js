@@ -32,8 +32,8 @@ addEventListener("#action", function (e: ActionEventInterface) {
 	}
 
 	// all other actions should be pointer actions
-	if (e instanceof PointerEvent) {
-		let { x, y, movementX, movementY } = e;
+	if (sourceEvent instanceof PointerEvent) {
+		let { x, y, movementX, movementY } = sourceEvent;
 
 		worker.postMessage({
 			action,
