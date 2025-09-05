@@ -26,8 +26,8 @@ const _superAction = new SuperAction({
 
 ## Declare
 
-Add an attribute with the pattern `_event=action`. The `#action` event will _always_ dispatch from
-the element with the `_event` attribute.
+Add an attribute with the pattern `event:=action`. The `#action` event will _always_ dispatch from
+the element with the `event:` attribute.
 
 ```html
 <button click:="decrement">-</button>
