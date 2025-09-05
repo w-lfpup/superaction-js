@@ -37,7 +37,7 @@ addEventListener("#action", function (e: ActionEventInterface) {
 
 		worker.postMessage({
 			action,
-			params: { movementX, movementY, x, y },
+			params: { x, y, movementX, movementY },
 		});
 	}
 });
