@@ -5,6 +5,7 @@
 	"type": "module",
 	"main": "./dist/mod.js",
 	"scripts": {
+		"prepare": "npm run build",
 		"build": "npx tsc --project ./src",
 		"build:examples": "npx tsc --project ./examples",
 		"format": "npx prettier ./ --write"

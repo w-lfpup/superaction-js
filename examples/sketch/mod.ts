@@ -55,7 +55,7 @@ function setupCanvas() {
 function sendCanvasParams() {
 	let { top, left } = canvas.getBoundingClientRect();
 	let { clientWidth, clientHeight } = canvas;
-	
+
 	worker.postMessage({
 		action: "set_canvas_params",
 		params: { top, left, width: clientWidth, height: clientHeight },
