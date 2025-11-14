@@ -13,16 +13,20 @@ addEventListener("#action", function (e) {
     let { target } = e;
     let { action, sourceEvent } = e.actionParams;
     // send actions to the offscreen canvas worker
-    if ("set_color" === action) {
-        if (target instanceof HTMLInputElement) {
-            worker.postMessage({
-                action,
-                color: target.value,
-            });
-        }
+    if ("set_color" === action && target instanceof HTMLInputElement) {
+        worker.postMessage({
+            action,
+            color: target.value,
+        });
     }
     // all other actions should be pointer actions
-    sendPointerMessage(action, sourceEvent);
+    if (sourceEvent instanceof PointerEvent) {
+        let { x, y, movementX, movementY } = sourceEvent;
+        worker.postMessage({
+            action,
+            params: { x, y, movementX, movementY },
+        });
+    }
 });
 function setupCanvas() {
     worker.postMessage({
@@ -37,15 +41,6 @@ function sendCanvasParams() {
         action: "set_canvas_params",
         params: { top, left, width: clientWidth, height: clientHeight },
     });
-}
-function sendPointerMessage(action, e) {
-    if (e instanceof PointerEvent) {
-        let { x, y, movementX, movementY } = e;
-        worker.postMessage({
-            action,
-            params: { movementX, movementY, x, y },
-        });
-    }
 }
 setupCanvas();
 sendCanvasParams();

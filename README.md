@@ -1,6 +1,6 @@
 # SuperAction-js
 
-A hypertext extension to dispatch actions on events in the browser.
+A hypertext extension to dispatch actions after events in the browser.
 
 ## Install
 
