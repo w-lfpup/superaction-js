@@ -56,7 +56,7 @@ export class SuperAction implements SuperActionInterface {
 
 export function dispatch(sourceEvent: Event) {
 	let { type, currentTarget, target } = sourceEvent;
-	if (!currentTarget || !target) return;
+	if (!currentTarget) return;
 
 	let formData: FormData | undefined;
 	if (target instanceof HTMLFormElement) formData = new FormData(target);
@@ -76,7 +76,7 @@ export function dispatch(sourceEvent: Event) {
 					{ bubbles: true, composed },
 				);
 
-				target.dispatchEvent(event);
+				currentTarget.dispatchEvent(event);
 			}
 
 			if (node.hasAttribute(`${type}:stop-propagation`)) return;
