@@ -8,7 +8,10 @@ export interface ActionEventInterface extends Event {
 	actionParams: ActionInterface;
 }
 
+// add host parameter
+// what if web component listens for event, dispatches on document
 export interface SuperActionParamsInterface {
+	// host: ParentNode;
 	target: ParentNode;
 	eventNames: string[];
 	connected?: boolean;
@@ -53,7 +56,7 @@ export class SuperAction implements SuperActionInterface {
 
 export function dispatch(sourceEvent: Event) {
 	let { type, currentTarget, target } = sourceEvent;
-	if (!currentTarget) return;
+	if (!currentTarget || !target) return;
 
 	let formData: FormData | undefined;
 	if (target instanceof HTMLFormElement) formData = new FormData(target);
@@ -72,7 +75,8 @@ export function dispatch(sourceEvent: Event) {
 					{ action, sourceEvent, formData },
 					{ bubbles: true, composed },
 				);
-				node.dispatchEvent(event);
+
+				target.dispatchEvent(event);
 			}
 
 			if (node.hasAttribute(`${type}:stop-propagation`)) return;

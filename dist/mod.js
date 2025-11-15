@@ -27,7 +27,7 @@ export class SuperAction {
 }
 export function dispatch(sourceEvent) {
     let { type, currentTarget, target } = sourceEvent;
-    if (!currentTarget)
+    if (!currentTarget || !target)
         return;
     let formData;
     if (target instanceof HTMLFormElement)
@@ -42,7 +42,7 @@ export function dispatch(sourceEvent) {
             if (action) {
                 let composed = node.hasAttribute(`${type}:composed`);
                 let event = new ActionEvent({ action, sourceEvent, formData }, { bubbles: true, composed });
-                node.dispatchEvent(event);
+                target.dispatchEvent(event);
             }
             if (node.hasAttribute(`${type}:stop-propagation`))
                 return;
