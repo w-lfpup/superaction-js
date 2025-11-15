@@ -36,8 +36,7 @@ const _superAction = new SuperAction({
 
 ## Declare
 
-Add an attribute with the pattern `event:=action`. The `#action` event will _always_ dispatch from
-the element with the `event:` attribute.
+Add an attribute with the pattern `event:=action`. The `#action` event will dispatch from the `host` element
 
 ```html
 <button click:="increment">+</button>
@@ -57,7 +56,7 @@ document.addEventListener("#action", (e) => {
 });
 ```
 
-Form data is available when action events are dispatched from form elements.
+Form data is available when action events originate from form elements.
 
 Learn more about action events [here](./action_events.md).
 
