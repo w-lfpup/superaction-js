@@ -28,7 +28,7 @@ This enables the DOM to declaratively send meaningful messages to Javascript-lan
 import { SuperAction } from "superaction";
 
 const _superAction = new SuperAction({
-	target: document,
+	host: document,
 	connected: true,
 	eventNames: ["click"],
 });

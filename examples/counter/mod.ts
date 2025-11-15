@@ -9,7 +9,7 @@ declare global {
 }
 
 const _superAction = new SuperAction({
-	target: document,
+	host: document,
 	connected: true,
 	eventNames: ["click"],
 });

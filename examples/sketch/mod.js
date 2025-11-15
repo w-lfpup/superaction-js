@@ -1,9 +1,10 @@
 import { SuperAction } from "superaction";
 const _superAction = new SuperAction({
-    target: document,
+    host: document,
     connected: true,
     eventNames: ["input", "pointerdown", "pointerup", "pointermove"],
 });
+// Then setup workers
 const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas");
 const offscreenCanvas = canvas.transferControlToOffscreen();

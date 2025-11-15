@@ -1,6 +1,6 @@
 import { SuperAction } from "superaction";
 const _superAction = new SuperAction({
-    target: document,
+    host: document,
     connected: true,
     eventNames: ["click"],
 });

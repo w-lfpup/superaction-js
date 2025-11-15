@@ -4,9 +4,11 @@
 
 ### Event stacking
 
-`Superaction-js` listens to any DOM event that bubbles.
+`Superaction-js` listens to any DOM event that bubbles. It also dispatches all actions found along the composed path of a DOM event.
 
 Turns out that's [all UI Events](https://www.w3.org/TR/uievents/#events-uievents). Which is a lot of events!
+
+Consider the following example:
 
 ```html
 <body click:="A">
@@ -16,7 +18,7 @@ Turns out that's [all UI Events](https://www.w3.org/TR/uievents/#events-uievents
 </body>
 ```
 
-So when a person clicks the button above, the order of action events is:
+When a person clicks the button above, the order of action events is:
 
 - Action "C"
 - Action "B"
@@ -24,7 +26,13 @@ So when a person clicks the button above, the order of action events is:
 
 ### Propagation
 
-Action event propagation has a declarative API similar to DOM events:
+Action events propagate similar to DOM events. Their declarative API reflects their DOM Event counterpart:
+
+- `event:prevent-default`
+- `event:stop-propagation`
+- `event:stop-immediate-propagation`
+
+Consider the following example:
 
 ```html
 <body

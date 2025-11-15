@@ -1,15 +1,16 @@
 export interface ActionInterface {
-    sourceEvent: Event;
     action: string;
     formData?: FormData;
+    sourceEvent: Event;
 }
 export interface ActionEventInterface extends Event {
     actionParams: ActionInterface;
 }
 export interface SuperActionParamsInterface {
-    target: ParentNode;
-    eventNames: string[];
     connected?: boolean;
+    eventNames: string[];
+    host: EventTarget;
+    target?: EventTarget;
 }
 export interface SuperActionInterface {
     connect(): void;
@@ -25,4 +26,3 @@ export declare class SuperAction implements SuperActionInterface {
     connect(): void;
     disconnect(): void;
 }
-export declare function dispatch(sourceEvent: Event): void;
