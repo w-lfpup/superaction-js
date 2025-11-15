@@ -1,8 +1,6 @@
 # Action Events
 
-## Lifecycles
-
-### Event stacking
+## Event stacking
 
 `Superaction-js` listens to any DOM event that bubbles. It also dispatches all actions found along the composed path of a DOM event.
 
@@ -24,7 +22,7 @@ When a person clicks the button above, the order of action events is:
 - Action "B"
 - Action "A"
 
-### Propagation
+## Propagation
 
 Action events propagate similar to DOM events. Their declarative API reflects their DOM Event counterpart:
 
