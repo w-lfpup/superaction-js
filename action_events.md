@@ -41,8 +41,7 @@ Action event propagation has a declarative API similar to DOM events:
 		<button
 			type=submit
 			click:="D"
-			click:stop-propagation
-			>
+			click:stop-propagation>
 			^_^
 		</button>
 	</form>

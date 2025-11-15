@@ -59,7 +59,7 @@ document.addEventListener("#action", (e) => {
 
 Form data is available when action events are dispatched from form elements.
 
-Learn more about event lifecycles [here](./action_events.md).
+Learn more about action events [here](./action_events.md).
 
 ## Typescript
 
