@@ -1,8 +1,16 @@
 # SuperAction-js
 
-A hypertext extension to dispatch actions on events in the browser.
+A hypertext extension to dispatch meaningful actions from the DOM.
 
 ## Install
+
+Install via npm.
+
+```sh
+npm install --save-dev @w-lfpup/superaction
+```
+
+Or install directly from github.
 
 ```sh
 npm install --save-dev https://github.com/w-lfpup/superaction-js
@@ -10,15 +18,17 @@ npm install --save-dev https://github.com/w-lfpup/superaction-js
 
 ## Setup
 
-Create a `SuperAction` instance with `eventNames` to dispatch `actions`.
+Create a `SuperAction` instance dispatch action events.
 
-The `SuperAction` below listens for `click` events. Event listeners are immediately `connected` to the `document`.
+The `SuperAction` instance below listens for `click` events. Event listeners are immediately `connected` to the `document`.
+
+This enables the DOM to declaratively send meaningful messages to Javascript-land.
 
 ```js
 import { SuperAction } from "superaction";
 
 const _superAction = new SuperAction({
-	target: document,
+	host: document,
 	connected: true,
 	eventNames: ["click"],
 });
@@ -26,29 +36,31 @@ const _superAction = new SuperAction({
 
 ## Declare
 
-Add an attribute with the pattern `event:=action`. The `#action` event will _always_ dispatch from
-the element with the `event:` attribute.
+Add an attribute with the pattern `event:=action`. The `#action` event will dispatch from the `host` element
 
 ```html
-<button click:="decrement">-</button>
 <button click:="increment">+</button>
 ```
 
 ## Listen
 
-```js
-addEventListener("#action", (e) => {
-	let { action, sourceEvent } = e.actionParams;
+Now the `button` will dispatch an `ActionEvent` from the `host` when clicked.
 
-	if ("decrement" === action) {
-		// decrement something!
-	}
+Add an event listener to connect action events from the UI to javascript-land.
+
+```js
+document.addEventListener("#action", (e) => {
+	let { action, sourceEvent, formData } = e.actionParams;
 
 	if ("increment" === action) {
 		// increment something!
 	}
 });
 ```
+
+Form data is available when action events originate from form elements.
+
+Learn more about action events [here](./action_events.md).
 
 ## Typescript
 
@@ -70,6 +82,14 @@ Here are some examples to demonstrate how easy it is to work with `SuperAction-j
 
 - a simple [counter](https://w-lfpup.github.io/superaction-js/examples/counter/)
 - a small [sketchpad](https://w-lfpup.github.io/superaction-js/examples/sketch/) using an offscreen canvas
+
+## Why do this?
+
+`Superaction` is inspired by the [elm](https://elm-lang.org) project.
+
+It turns HTML into a declarative and _explicit_ message generator and removes several layers of indirection between UI and app state.
+
+`Superaction` is a straightforward way to work with vanilla web technologies and escape the JSX rabbithole.
 
 ## License
 

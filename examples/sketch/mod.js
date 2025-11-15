@@ -1,29 +1,37 @@
 import { SuperAction } from "superaction";
 const _superAction = new SuperAction({
-    target: document,
+    host: document,
     connected: true,
     eventNames: ["input", "pointerdown", "pointerup", "pointermove"],
 });
+// Setup workers
 const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas");
 const offscreenCanvas = canvas.transferControlToOffscreen();
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
+// Add reactions
 addEventListener("#action", function (e) {
-    let { target } = e;
     let { action, sourceEvent } = e.actionParams;
     // send actions to the offscreen canvas worker
-    if ("set_color" === action) {
-        if (target instanceof HTMLInputElement) {
-            worker.postMessage({
-                action,
-                color: target.value,
-            });
-        }
+    // set color action needs input value
+    if ("set_color" === action &&
+        sourceEvent.target instanceof HTMLInputElement) {
+        worker.postMessage({
+            action,
+            color: sourceEvent.target.value,
+        });
     }
-    // all other actions should be pointer actions
-    sendPointerMessage(action, sourceEvent);
+    // other pointer actions
+    if (sourceEvent instanceof PointerEvent) {
+        let { x, y, movementX, movementY } = sourceEvent;
+        worker.postMessage({
+            action,
+            params: { x, y, movementX, movementY },
+        });
+    }
 });
+// Initialize offscreen canvas
 function setupCanvas() {
     worker.postMessage({
         action: "setup_canvas",
@@ -37,15 +45,6 @@ function sendCanvasParams() {
         action: "set_canvas_params",
         params: { top, left, width: clientWidth, height: clientHeight },
     });
-}
-function sendPointerMessage(action, e) {
-    if (e instanceof PointerEvent) {
-        let { x, y, movementX, movementY } = e;
-        worker.postMessage({
-            action,
-            params: { movementX, movementY, x, y },
-        });
-    }
 }
 setupCanvas();
 sendCanvasParams();

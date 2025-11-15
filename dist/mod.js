@@ -6,46 +6,54 @@ export class ActionEvent extends Event {
     }
 }
 export class SuperAction {
+    #connected = false;
+    #boundDispatch;
     #params;
+    #target;
     constructor(params) {
-        this.#params = params;
+        this.#params = { ...params };
+        this.#target = params.target ?? params.host;
+        this.#boundDispatch = this.#dispatch.bind(this);
         if (this.#params.connected)
             this.connect();
     }
     connect() {
-        let { target, eventNames } = this.#params;
+        if (this.#connected)
+            return;
+        this.#connected = true;
+        let { host, eventNames } = this.#params;
         for (let name of eventNames) {
-            target.addEventListener(name, dispatch);
+            host.addEventListener(name, this.#boundDispatch);
         }
     }
     disconnect() {
-        let { target, eventNames } = this.#params;
+        let { host, eventNames } = this.#params;
         for (let name of eventNames) {
-            target.removeEventListener(name, dispatch);
+            host.removeEventListener(name, this.#boundDispatch);
         }
     }
-}
-export function dispatch(sourceEvent) {
-    let { type, currentTarget, target } = sourceEvent;
-    if (!currentTarget)
-        return;
-    let formData;
-    if (target instanceof HTMLFormElement)
-        formData = new FormData(target);
-    for (let node of sourceEvent.composedPath()) {
-        if (node instanceof Element) {
-            if (node.hasAttribute(`${type}:prevent-default`))
-                sourceEvent.preventDefault();
-            if (node.hasAttribute(`${type}:stop-immediate-propagation`))
-                return;
-            let action = node.getAttribute(`${type}:`);
-            if (action) {
-                let composed = node.hasAttribute(`${type}:composed`);
-                let event = new ActionEvent({ action, sourceEvent, formData }, { bubbles: true, composed });
-                node.dispatchEvent(event);
+    #dispatch(sourceEvent) {
+        let { type, currentTarget, target } = sourceEvent;
+        if (!currentTarget)
+            return;
+        let formData;
+        if (target instanceof HTMLFormElement)
+            formData = new FormData(target);
+        for (let node of sourceEvent.composedPath()) {
+            if (node instanceof Element) {
+                if (node.hasAttribute(`${type}:prevent-default`))
+                    sourceEvent.preventDefault();
+                if (node.hasAttribute(`${type}:stop-immediate-propagation`))
+                    return;
+                let action = node.getAttribute(`${type}:`);
+                if (action) {
+                    let composed = node.hasAttribute(`${type}:composed`);
+                    let event = new ActionEvent({ action, sourceEvent, formData }, { bubbles: true, composed });
+                    this.#target.dispatchEvent(event);
+                }
+                if (node.hasAttribute(`${type}:stop-propagation`))
+                    return;
             }
-            if (node.hasAttribute(`${type}:stop-propagation`))
-                return;
         }
     }
 }

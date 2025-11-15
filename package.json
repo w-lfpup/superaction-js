@@ -1,11 +1,12 @@
 {
-	"name": "superaction",
-	"version": "0.1.0",
-	"description": "Html action events",
+	"name": "@w-lfpup/superaction",
 	"type": "module",
-	"main": "./dist/mod.js",
+	"main": "dist/mod.js",
+	"description": "A hypertext extension to dispatch meaningful actions from the DOM",
+	"license": "BSD-3-Clause",
+	"version": "0.1.0",
 	"scripts": {
-		"prepare": "npm run build",
+		"prepare": "npm run build && npm run build:examples",
 		"build": "npx tsc --project ./src",
 		"build:examples": "npx tsc --project ./examples",
 		"format": "npx prettier ./ --write"
@@ -14,6 +15,8 @@
 		"prettier": "^3.2.5",
 		"typescript": "^5.4.5"
 	},
-	"author": "wolfpup",
-	"license": "BSD-3-Clause"
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/w-lfpup/superaction-js.git"
+	}
 }

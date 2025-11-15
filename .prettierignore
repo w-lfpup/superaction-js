@@ -1,6 +1,5 @@
 dist/
+
 *.js
 *.html
-
-LICENSE
 package-lock.json

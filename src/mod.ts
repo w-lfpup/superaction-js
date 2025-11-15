@@ -1,7 +1,7 @@
 export interface ActionInterface {
-	sourceEvent: Event;
 	action: string;
 	formData?: FormData;
+	sourceEvent: Event;
 }
 
 export interface ActionEventInterface extends Event {
@@ -9,9 +9,10 @@ export interface ActionEventInterface extends Event {
 }
 
 export interface SuperActionParamsInterface {
-	target: ParentNode;
-	eventNames: string[];
 	connected?: boolean;
+	eventNames: string[];
+	host: EventTarget;
+	target?: EventTarget;
 }
 
 export interface SuperActionInterface {
@@ -29,53 +30,65 @@ export class ActionEvent extends Event implements ActionEventInterface {
 }
 
 export class SuperAction implements SuperActionInterface {
+	#connected = false;
+
+	#boundDispatch: EventListenerOrEventListenerObject;
 	#params: SuperActionParamsInterface;
+	#target: EventTarget;
 
 	constructor(params: SuperActionParamsInterface) {
-		this.#params = params;
+		this.#params = { ...params };
+		this.#target = params.target ?? params.host;
+		this.#boundDispatch = this.#dispatch.bind(this);
+
 		if (this.#params.connected) this.connect();
 	}
 
 	connect() {
-		let { target, eventNames } = this.#params;
+		if (this.#connected) return;
+		this.#connected = true;
+
+		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
-			target.addEventListener(name, dispatch);
+			host.addEventListener(name, this.#boundDispatch);
 		}
 	}
 
 	disconnect() {
-		let { target, eventNames } = this.#params;
+		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
-			target.removeEventListener(name, dispatch);
+			host.removeEventListener(name, this.#boundDispatch);
 		}
 	}
-}
 
-export function dispatch(sourceEvent: Event) {
-	let { type, currentTarget, target } = sourceEvent;
-	if (!currentTarget) return;
+	#dispatch(sourceEvent: Event) {
+		let { type, currentTarget, target } = sourceEvent;
+		if (!currentTarget) return;
 
-	let formData: FormData | undefined;
-	if (target instanceof HTMLFormElement) formData = new FormData(target);
+		let formData: FormData | undefined;
+		if (target instanceof HTMLFormElement) formData = new FormData(target);
 
-	for (let node of sourceEvent.composedPath()) {
-		if (node instanceof Element) {
-			if (node.hasAttribute(`${type}:prevent-default`))
-				sourceEvent.preventDefault();
+		for (let node of sourceEvent.composedPath()) {
+			if (node instanceof Element) {
+				if (node.hasAttribute(`${type}:prevent-default`))
+					sourceEvent.preventDefault();
 
-			if (node.hasAttribute(`${type}:stop-immediate-propagation`)) return;
+				if (node.hasAttribute(`${type}:stop-immediate-propagation`))
+					return;
 
-			let action = node.getAttribute(`${type}:`);
-			if (action) {
-				let composed = node.hasAttribute(`${type}:composed`);
-				let event = new ActionEvent(
-					{ action, sourceEvent, formData },
-					{ bubbles: true, composed },
-				);
-				node.dispatchEvent(event);
+				let action = node.getAttribute(`${type}:`);
+				if (action) {
+					let composed = node.hasAttribute(`${type}:composed`);
+					let event = new ActionEvent(
+						{ action, sourceEvent, formData },
+						{ bubbles: true, composed },
+					);
+
+					this.#target.dispatchEvent(event);
+				}
+
+				if (node.hasAttribute(`${type}:stop-propagation`)) return;
 			}
-
-			if (node.hasAttribute(`${type}:stop-propagation`)) return;
 		}
 	}
 }
