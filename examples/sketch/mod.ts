@@ -13,7 +13,7 @@ const _superAction = new SuperAction({
 	eventNames: ["input", "pointerdown", "pointerup", "pointermove"],
 });
 
-// Then setup workers
+// Setup workers
 const worker = new Worker("worker.js", { type: "module" });
 const canvas = document.querySelector("canvas")!;
 const offscreenCanvas = canvas.transferControlToOffscreen();
@@ -21,19 +21,24 @@ const offscreenCanvas = canvas.transferControlToOffscreen();
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 
+// Add reactions
 addEventListener("#action", function (e: ActionEventInterface) {
-	let { target } = e;
 	let { action, sourceEvent } = e.actionParams;
 
 	// send actions to the offscreen canvas worker
-	if ("set_color" === action && target instanceof HTMLInputElement) {
+
+	// set color action needs input value
+	if (
+		"set_color" === action &&
+		sourceEvent.target instanceof HTMLInputElement
+	) {
 		worker.postMessage({
 			action,
-			color: target.value,
+			color: sourceEvent.target.value,
 		});
 	}
 
-	// all other actions should be pointer actions
+	// other pointer actions
 	if (sourceEvent instanceof PointerEvent) {
 		let { x, y, movementX, movementY } = sourceEvent;
 
@@ -44,6 +49,7 @@ addEventListener("#action", function (e: ActionEventInterface) {
 	}
 });
 
+// Initialize offscreen canvas
 function setupCanvas() {
 	worker.postMessage(
 		{

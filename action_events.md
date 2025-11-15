@@ -70,3 +70,9 @@ Click button D:
 
 - Action "D" dispatched
 - Action event propagation stopped similar to `event.stopPropagation()`
+
+## Why #action ?
+
+The `#action` event name, specifically the `#`, is used to prevent cyclical event disptaches.
+
+We can't _dynamically_ add attribtues to elements that start with `#`. And in this way, some of the infinite loop risk is mitigated.
