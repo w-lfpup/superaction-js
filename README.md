@@ -44,7 +44,9 @@ Add an attribute with the pattern `event:=action`. The `#action` event will disp
 
 ## Listen
 
-Now the `button` will dispatch an `ActionEvent` when it's clicked.
+Now the `button` will dispatch an `ActionEvent` from the `host` when clicked.
+
+Add an event listener to connect action events from the UI to javascript-land.
 
 ```js
 document.addEventListener("#action", (e) => {
@@ -88,8 +90,6 @@ Here are some examples to demonstrate how easy it is to work with `SuperAction-j
 It turns HTML into a declarative and _explicit_ message generator and removes several layers of indirection between UI and app state.
 
 `Superaction` is a straightforward way to work with vanilla web technologies and escape the JSX rabbithole.
-
-Developers can focus on state and consequential DOM updates in javascript-land without maintaining event listeners for every element during the dom lifecycle.
 
 ## License
 
