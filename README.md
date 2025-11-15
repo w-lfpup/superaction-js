@@ -81,6 +81,16 @@ Here are some examples to demonstrate how easy it is to work with `SuperAction-j
 - a simple [counter](https://w-lfpup.github.io/superaction-js/examples/counter/)
 - a small [sketchpad](https://w-lfpup.github.io/superaction-js/examples/sketch/) using an offscreen canvas
 
+## Why do this?
+
+`Superaction` is inspired by the [elm](https://elm-lang.org) project.
+
+It turns HTML into a declarative and _explicit_ message generator and removes several layers of indirection between UI and app state.
+
+`Superaction` is a straightforward way to work with vanilla web technologies and escape the JSX rabbithole.
+
+Developers can focus on state and consequential DOM updates in javascript-land without maintaining event listeners for every element during the dom lifecycle.
+
 ## License
 
 `SuperAction-js` is released under the BSD-3 Clause License.
