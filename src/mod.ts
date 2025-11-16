@@ -31,15 +31,14 @@ export class ActionEvent extends Event implements ActionEventInterface {
 
 export class SuperAction implements SuperActionInterface {
 	#connected = false;
+	#boundDispatch = this.#dispatch.bind(this);
 
-	#boundDispatch: EventListenerOrEventListenerObject;
 	#params: SuperActionParamsInterface;
 	#target: EventTarget;
 
 	constructor(params: SuperActionParamsInterface) {
 		this.#params = { ...params };
 		this.#target = params.target ?? params.host;
-		this.#boundDispatch = this.#dispatch.bind(this);
 
 		if (this.#params.connected) this.connect();
 	}
