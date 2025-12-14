@@ -7,13 +7,12 @@ export class ActionEvent extends Event {
 }
 export class SuperAction {
     #connected = false;
-    #boundDispatch;
+    #boundDispatch = this.#dispatch.bind(this);
     #params;
     #target;
     constructor(params) {
         this.#params = { ...params };
         this.#target = params.target ?? params.host;
-        this.#boundDispatch = this.#dispatch.bind(this);
         if (this.#params.connected)
             this.connect();
     }
@@ -27,6 +26,9 @@ export class SuperAction {
         }
     }
     disconnect() {
+        if (!this.#connected)
+            return;
+        this.#connected = false;
         let { host, eventNames } = this.#params;
         for (let name of eventNames) {
             host.removeEventListener(name, this.#boundDispatch);

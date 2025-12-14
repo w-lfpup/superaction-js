@@ -87,7 +87,7 @@ Here are some examples to demonstrate how easy it is to work with `SuperAction-j
 
 `Superaction` is inspired by the [elm](https://elm-lang.org) project.
 
-It turns HTML into a declarative and _explicit_ message generator and removes several layers of indirection between UI and app state.
+It skips several layers of indirection between UI and app state and turns HTML into a declarative message generator.
 
 `Superaction` is a straightforward way to work with vanilla web technologies and escape the JSX rabbithole.
 

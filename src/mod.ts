@@ -54,6 +54,9 @@ export class SuperAction implements SuperActionInterface {
 	}
 
 	disconnect() {
+		if (!this.#connected) return;
+		this.#connected = false;
+
 		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
 			host.removeEventListener(name, this.#boundDispatch);
