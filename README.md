@@ -2,10 +2,12 @@
 
 A hypertext extension to dispatch meaningful actions from the DOM.
 
+[![builds](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml)
+
 ## Install
 
 Install via npm.
-
+,
 ```sh
 npm install --save-dev @w-lfpup/superaction
 ```
@@ -18,11 +20,9 @@ npm install --save-dev https://github.com/w-lfpup/superaction-js
 
 ## Setup
 
-Create a `SuperAction` instance dispatch action events.
+Create a `SuperAction` instance to dispatch action events.
 
 The `SuperAction` instance below listens for `click` events. Event listeners are immediately `connected` to the `document`.
-
-This enables the DOM to declaratively send meaningful messages to Javascript-land.
 
 ```js
 import { SuperAction } from "superaction";
@@ -33,6 +33,8 @@ const _superAction = new SuperAction({
 	eventNames: ["click"],
 });
 ```
+
+Now the DOM can declarativey dispatch meaningful messages from HTML to Javascript-land.
 
 ## Declare
 
@@ -87,7 +89,7 @@ Here are some examples to demonstrate how easy it is to work with `SuperAction-j
 
 `Superaction` is inspired by the [elm](https://elm-lang.org) project.
 
-It turns HTML into a declarative and _explicit_ message generator and removes several layers of indirection between UI and app state.
+It skips several layers of indirection between UI and app state and turns HTML into a declarative message generator.
 
 `Superaction` is a straightforward way to work with vanilla web technologies and escape the JSX rabbithole.
 
