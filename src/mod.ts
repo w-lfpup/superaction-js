@@ -1,7 +1,8 @@
 export interface ActionInterface {
-	action: string;
+	kind: string;
 	formData?: FormData;
-	sourceEvent: Event;
+	originElement: EventTarget;
+	originEvent: Event;
 }
 
 export interface ActionEventInterface extends Event {
@@ -63,26 +64,26 @@ export class SuperAction implements SuperActionInterface {
 		}
 	}
 
-	#dispatch(sourceEvent: Event) {
-		let { type, currentTarget, target } = sourceEvent;
+	#dispatch(originEvent: Event) {
+		let { type, currentTarget, target } = originEvent;
 		if (!currentTarget) return;
 
 		let formData: FormData | undefined;
 		if (target instanceof HTMLFormElement) formData = new FormData(target);
 
-		for (let node of sourceEvent.composedPath()) {
+		for (let node of originEvent.composedPath()) {
 			if (node instanceof Element) {
 				if (node.hasAttribute(`${type}:prevent-default`))
-					sourceEvent.preventDefault();
+					originEvent.preventDefault();
 
 				if (node.hasAttribute(`${type}:stop-immediate-propagation`))
 					return;
 
-				let action = node.getAttribute(`${type}:`);
-				if (action) {
+				let kind = node.getAttribute(`${type}:`);
+				if (kind) {
 					let composed = node.hasAttribute(`${type}:composed`);
 					let event = new ActionEvent(
-						{ action, sourceEvent, formData },
+						{ kind, originElement: node, originEvent, formData },
 						{ bubbles: true, composed },
 					);
 
