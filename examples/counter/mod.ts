@@ -18,13 +18,13 @@ const countEl = document.querySelector("[count]")!;
 let count = parseFloat(countEl.textContent ?? "");
 
 addEventListener("#action", function (e) {
-	let { action } = e.actionParams;
+	let { kind } = e.action;
 
-	if ("increment" === action) {
+	if ("increment" === kind) {
 		count += 1;
 	}
 
-	if ("decrement" === action) {
+	if ("decrement" === kind) {
 		count -= 1;
 	}
 

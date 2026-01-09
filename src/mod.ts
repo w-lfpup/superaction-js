@@ -1,3 +1,9 @@
+declare global {
+	interface GlobalEventHandlersEventMap {
+		["#action"]: ActionEventInterface;
+	}
+}
+
 export interface ActionInterface {
 	kind: string;
 	formData?: FormData;
@@ -6,7 +12,7 @@ export interface ActionInterface {
 }
 
 export interface ActionEventInterface extends Event {
-	actionParams: ActionInterface;
+	action: ActionInterface;
 }
 
 export interface SuperActionParamsInterface {
@@ -22,11 +28,11 @@ export interface SuperActionInterface {
 }
 
 export class ActionEvent extends Event implements ActionEventInterface {
-	actionParams: ActionInterface;
+	action: ActionInterface;
 
-	constructor(actionParams: ActionInterface, eventInit?: EventInit) {
+	constructor(action: ActionInterface, eventInit?: EventInit) {
 		super("#action", eventInit);
-		this.actionParams = actionParams;
+		this.action = action;
 	}
 }
 

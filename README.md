@@ -1,6 +1,6 @@
 # SuperAction-js
 
-A hypertext extension to dispatch meaningful actions from the DOM.
+A hypertext extension to dispatch meaningful actions from HTML.
 
 [![builds](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml)
 
@@ -8,6 +8,7 @@ A hypertext extension to dispatch meaningful actions from the DOM.
 
 Install via npm.
 ,
+
 ```sh
 npm install --save-dev @w-lfpup/superaction
 ```
@@ -52,7 +53,7 @@ Add an event listener to connect action events from the UI to javascript-land.
 
 ```js
 document.addEventListener("#action", (e) => {
-	let { action, sourceEvent, formData } = e.actionParams;
+	let { kind, originElement, originEvent, formData } = e.action;
 
 	if ("increment" === action) {
 		// increment something!
@@ -63,20 +64,6 @@ document.addEventListener("#action", (e) => {
 Form data is available when action events originate from form elements.
 
 Learn more about action events [here](./action_events.md).
-
-## Typescript
-
-I'm not trying to pollute your globals so if you want typed `#action` events, please add the following to your app somewhere thoughtful.
-
-```ts
-import type { ActionEventInterface } from "superaction";
-
-declare global {
-	interface GlobalEventHandlersEventMap {
-		["#action"]: ActionEventInterface;
-	}
-}
-```
 
 ## Examples
 

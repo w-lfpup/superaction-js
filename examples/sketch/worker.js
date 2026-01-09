@@ -4,11 +4,11 @@ let pen_to_paper = false;
 let canvasParams;
 self.addEventListener("message", function (e) {
     let { data } = e;
-    if ("setup_canvas" === data.action) {
+    if ("setup_canvas" === data.kind) {
         canvas = data.offscreenCanvas;
         ctx = canvas.getContext("2d");
     }
-    if ("set_canvas_params" === data.action) {
+    if ("set_canvas_params" === data.kind) {
         canvas.width = data.params.width;
         canvas.height = data.params.height;
         canvasParams = data.params;
@@ -17,17 +17,16 @@ self.addEventListener("message", function (e) {
             ctx.lineCap = "round";
         }
     }
-    if ("set_color" === data.action) {
+    if ("set_color" === data.kind) {
         let { color } = data;
         if (ctx) {
             ctx.strokeStyle = color;
             ctx.fillStyle = color;
         }
     }
-    if ("press_pen" === data.action) {
+    if ("press_pen" === data.kind) {
         pen_to_paper = true;
         if (ctx) {
-            // create first point
             ctx.beginPath();
             let { top, left } = canvasParams;
             let { x, y } = data.params;
@@ -36,11 +35,10 @@ self.addEventListener("message", function (e) {
             ctx.arc(dx, dy, ctx.lineWidth * 0.5, 0, 2 * Math.PI, true);
             ctx.fill();
             ctx.closePath();
-            // start a "line"
             ctx.beginPath();
         }
     }
-    if ("move_pen" === data.action) {
+    if ("move_pen" === data.kind) {
         if (ctx && pen_to_paper) {
             let { top, left } = canvasParams;
             let { movementY, movementX, x, y } = data.params;
@@ -51,7 +49,7 @@ self.addEventListener("message", function (e) {
             ctx.stroke();
         }
     }
-    if ("lift_pen" === data.action) {
+    if ("lift_pen" === data.kind) {
         pen_to_paper = false;
         ctx?.closePath();
     }
