@@ -8,12 +8,12 @@ let canvasParams: CanvasParams;
 self.addEventListener("message", function (e: MessageEvent<Actions>) {
 	let { data } = e;
 
-	if ("setup_canvas" === data.action) {
+	if ("setup_canvas" === data.kind) {
 		canvas = data.offscreenCanvas;
 		ctx = canvas.getContext("2d");
 	}
 
-	if ("set_canvas_params" === data.action) {
+	if ("set_canvas_params" === data.kind) {
 		canvas.width = data.params.width;
 		canvas.height = data.params.height;
 		canvasParams = data.params;
@@ -23,7 +23,7 @@ self.addEventListener("message", function (e: MessageEvent<Actions>) {
 		}
 	}
 
-	if ("set_color" === data.action) {
+	if ("set_color" === data.kind) {
 		let { color } = data;
 		if (ctx) {
 			ctx.strokeStyle = color;
@@ -31,7 +31,7 @@ self.addEventListener("message", function (e: MessageEvent<Actions>) {
 		}
 	}
 
-	if ("press_pen" === data.action) {
+	if ("press_pen" === data.kind) {
 		pen_to_paper = true;
 		if (ctx) {
 			// create first point
@@ -51,7 +51,7 @@ self.addEventListener("message", function (e: MessageEvent<Actions>) {
 		}
 	}
 
-	if ("move_pen" === data.action) {
+	if ("move_pen" === data.kind) {
 		if (ctx && pen_to_paper) {
 			let { top, left } = canvasParams;
 			let { movementY, movementX, x, y } = data.params;
@@ -65,7 +65,7 @@ self.addEventListener("message", function (e: MessageEvent<Actions>) {
 		}
 	}
 
-	if ("lift_pen" === data.action) {
+	if ("lift_pen" === data.kind) {
 		pen_to_paper = false;
 		ctx?.closePath();
 	}

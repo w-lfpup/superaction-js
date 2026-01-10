@@ -21,29 +21,27 @@ const offscreenCanvas = canvas.transferControlToOffscreen();
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 
-// Add reactions
+// send actions to the offscreen canvas worker
 addEventListener("#action", function (e: ActionEventInterface) {
-	let { action, sourceEvent } = e.actionParams;
-
-	// send actions to the offscreen canvas worker
+	let { kind, originEvent } = e.action;
 
 	// set color action needs input value
 	if (
-		"set_color" === action &&
-		sourceEvent.target instanceof HTMLInputElement
+		"set_color" === kind &&
+		originEvent.target instanceof HTMLInputElement
 	) {
 		worker.postMessage({
-			action,
-			color: sourceEvent.target.value,
+			kind,
+			color: originEvent.target.value,
 		});
 	}
 
 	// other pointer actions
-	if (sourceEvent instanceof PointerEvent) {
-		let { x, y, movementX, movementY } = sourceEvent;
+	if (originEvent instanceof PointerEvent) {
+		let { x, y, movementX, movementY } = originEvent;
 
 		worker.postMessage({
-			action,
+			kind,
 			params: { x, y, movementX, movementY },
 		});
 	}
@@ -53,7 +51,7 @@ addEventListener("#action", function (e: ActionEventInterface) {
 function setupCanvas() {
 	worker.postMessage(
 		{
-			action: "setup_canvas",
+			kind: "setup_canvas",
 			offscreenCanvas,
 		},
 		[offscreenCanvas],
@@ -65,7 +63,7 @@ function sendCanvasParams() {
 	let { clientWidth, clientHeight } = canvas;
 
 	worker.postMessage({
-		action: "set_canvas_params",
+		kind: "set_canvas_params",
 		params: { top, left, width: clientWidth, height: clientHeight },
 	});
 }

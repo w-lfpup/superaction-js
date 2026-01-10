@@ -13,32 +13,32 @@ interface PenParams {
 }
 
 interface SetupCanvas {
-	action: "setup_canvas";
+	kind: "setup_canvas";
 	offscreenCanvas: OffscreenCanvas;
 }
 
 interface SetCanvasParams {
-	action: "set_canvas_params";
+	kind: "set_canvas_params";
 	params: CanvasParams;
 }
 
 interface SetColor {
-	action: "set_color";
+	kind: "set_color";
 	color: string;
 }
 
 interface MovePen {
-	action: "move_pen";
+	kind: "move_pen";
 	params: PenParams;
 }
 
 interface PressPen {
-	action: "press_pen";
+	kind: "press_pen";
 	params: PenParams;
 }
 
 interface LiftPen {
-	action: "lift_pen";
+	kind: "lift_pen";
 	params: PenParams;
 }
 

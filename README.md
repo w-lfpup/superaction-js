@@ -1,6 +1,6 @@
 # SuperAction-js
 
-A hypertext extension to dispatch meaningful actions from the DOM.
+A hypertext extension to dispatch meaningful actions from HTML.
 
 [![builds](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml)
 
@@ -8,6 +8,7 @@ A hypertext extension to dispatch meaningful actions from the DOM.
 
 Install via npm.
 ,
+
 ```sh
 npm install --save-dev @w-lfpup/superaction
 ```
@@ -52,7 +53,7 @@ Add an event listener to connect action events from the UI to javascript-land.
 
 ```js
 document.addEventListener("#action", (e) => {
-	let { action, sourceEvent, formData } = e.actionParams;
+	let { kind, originElement, originEvent, formData } = e.action;
 
 	if ("increment" === action) {
 		// increment something!
@@ -62,36 +63,80 @@ document.addEventListener("#action", (e) => {
 
 Form data is available when action events originate from form elements.
 
-Learn more about action events [here](./action_events.md).
+## Event stacking
 
-## Typescript
+`Superaction-js` listens to any DOM event that bubbles. It also dispatches all actions found along the composed path of a DOM event.
 
-I'm not trying to pollute your globals so if you want typed `#action` events, please add the following to your app somewhere thoughtful.
+Turns out that's [all UI Events](https://www.w3.org/TR/uievents/#events-uievents). Which is a lot of events!
 
-```ts
-import type { ActionEventInterface } from "superaction";
+Consider the following example:
 
-declare global {
-	interface GlobalEventHandlersEventMap {
-		["#action"]: ActionEventInterface;
-	}
-}
+```html
+<body click:="A">
+	<div click:="B">
+		<button click:="C">hai :3</button>
+	</div>
+</body>
 ```
 
-## Examples
+When a person clicks the button above, the order of action events is:
 
-Here are some examples to demonstrate how easy it is to work with `SuperAction-js`:
+- Action "C"
+- Action "B"
+- Action "A"
 
-- a simple [counter](https://w-lfpup.github.io/superaction-js/examples/counter/)
-- a small [sketchpad](https://w-lfpup.github.io/superaction-js/examples/sketch/) using an offscreen canvas
+## Propagation
 
-## Why do this?
+Action events propagate similar to DOM events. Their declarative API reflects their DOM Event counterpart:
 
-`Superaction` is inspired by the [elm](https://elm-lang.org) project.
+- `event:prevent-default`
+- `event:stop-propagation`
+- `event:stop-immediate-propagation`
 
-It skips several layers of indirection between UI and app state and turns HTML into a declarative message generator.
+Consider the following example:
 
-`Superaction` is a straightforward way to work with vanilla web technologies and escape the JSX rabbithole.
+```html
+<body
+	click:="A"
+	click:stop-immediate-propagation>
+	<form
+		click:="B"
+		click:prevent-default>
+		<button
+			type=submit
+			click:="C">
+			UwU
+		</button>
+		<button
+			type=submit
+			click:="D"
+			click:stop-propagation>
+			^_^
+		</button>
+	</form>
+</body>
+```
+
+So when a person clicks the buttons above, the order of actions is:
+
+Click button C:
+
+- Action "C" dispatched
+- `preventDefault()` is called on the original `HTMLSubmitEvent`
+- Action "B" dispatched
+- Action propagation is stopped similar to `event.stopImmediatePropagation()`
+- Action "A" does _not_ dispatch
+
+Click button D:
+
+- Action "D" dispatched
+- Action event propagation stopped similar to `event.stopPropagation()`
+
+## Why #action ?
+
+The `#action` event name, specifically the `#`, is used to prevent cyclical event disptaches.
+
+We can't _dynamically_ add attribtues to elements that start with `#`. And in this way, some of the infinite loop risk is mitigated.
 
 ## License
 
