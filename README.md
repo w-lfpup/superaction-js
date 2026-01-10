@@ -65,21 +65,6 @@ Form data is available when action events originate from form elements.
 
 Learn more about action events [here](./action_events.md).
 
-## Examples
-
-Here are some examples to demonstrate how easy it is to work with `SuperAction-js`:
-
-- a simple [counter](https://w-lfpup.github.io/superaction-js/examples/counter/)
-- a small [sketchpad](https://w-lfpup.github.io/superaction-js/examples/sketch/) using an offscreen canvas
-
-## Why do this?
-
-`Superaction` is inspired by the [elm](https://elm-lang.org) project.
-
-It skips several layers of indirection between UI and app state and turns HTML into a declarative message generator.
-
-`Superaction` is a straightforward way to work with vanilla web technologies and escape the JSX rabbithole.
-
 ## License
 
 `SuperAction-js` is released under the BSD-3 Clause License.

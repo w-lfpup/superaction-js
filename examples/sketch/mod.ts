@@ -25,7 +25,6 @@ resizeObserver.observe(canvas);
 addEventListener("#action", function (e: ActionEventInterface) {
 	let { kind, originEvent } = e.action;
 
-
 	// set color action needs input value
 	if (
 		"set_color" === kind &&
