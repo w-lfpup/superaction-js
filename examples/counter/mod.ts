@@ -1,12 +1,4 @@
-import type { ActionEventInterface } from "superaction";
-
 import { SuperAction } from "superaction";
-
-declare global {
-	interface GlobalEventHandlersEventMap {
-		["#action"]: ActionEventInterface;
-	}
-}
 
 const _superAction = new SuperAction({
 	host: document,
