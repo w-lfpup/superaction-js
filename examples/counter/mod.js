@@ -5,7 +5,9 @@ const _superAction = new SuperAction({
     eventNames: ["click"],
 });
 const countEl = document.querySelector("[count]");
-let count = parseFloat(countEl.textContent ?? "");
+let count = parseFloat(countEl.textContent);
+if (Number.isNaN(count))
+    count = 0;
 addEventListener("#action", function (e) {
     let { kind } = e.action;
     if ("increment" === kind) {

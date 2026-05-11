@@ -1,13 +1,14 @@
 # SuperAction-js
 
-A hypertext extension to dispatch meaningful actions from HTML.
+A hypertext extension that enables a browser to dispatch more meaningful actions from HTML.
+
+(It's also a proof-of-concept for [hyperevents-js](https://github.com/w-lfpup/hyperevents-js)).
 
 [![builds](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml)
 
 ## Install
 
 Install via npm.
-,
 
 ```sh
 npm install --save-dev @w-lfpup/superaction
@@ -30,12 +31,12 @@ import { SuperAction } from "superaction";
 
 const _superAction = new SuperAction({
 	host: document,
-	connected: true,
 	eventNames: ["click"],
+	connected: true,
 });
 ```
 
-Now the DOM can declarativey dispatch meaningful messages from HTML to Javascript-land.
+Now the DOM can declarativey dispatch meaningful messages from HTML to Javascript-land because `SuperAction` effectively works like a classic eventbus!
 
 ## Declare
 
