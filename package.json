@@ -9,7 +9,7 @@
 		"prepare": "npm run build",
 		"build": "npm run build:core && npm run build:examples && npm run build:tests",
 		"build:core": "npx tsc --project src/",
-		"build:examples": "npx tsc --project examples/",
+		"build:examples": "npx tsc --project docs/",
 		"build:tests": "npx tsc --project tests/",
 		"test": "npm run test:browsers",
 		"test:browsers": "npx jackrabbit_webdriver jr.json tests/dist/mod.js",
