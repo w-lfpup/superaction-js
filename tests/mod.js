@@ -1,2 +1,3 @@
 import * as OneShotTests from "./quick_one_shot.tests.js";
-export const testModules = [OneShotTests];
+import * as PropagationTests from "./propagation_tests.js";
+export const testModules = [OneShotTests, PropagationTests];
