@@ -4,7 +4,7 @@ A hypertext extension that enables a browser to dispatch more meaningful actions
 
 (It's also a proof-of-concept for [hyperevents-js](https://github.com/w-lfpup/hyperevents-js)).
 
-[![builds](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml)
+[![tests](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml)
 
 ## Install
 
