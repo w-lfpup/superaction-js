@@ -11,13 +11,17 @@ async function testPropagation() {
 			click:="no_dont_do_another_one">
 			<section
 				click:="another_one"
-				click:stop_propagation>
-				<button click:="one_shot">hello!</button>
+				click:stop-propagation>
+				<button
+					data-test-id="one_shot"
+					click:="one_shot">hello!</button>
 			</section>
 			<section
 				click:="nooooooo"
-				click:stop_immediate_propagation>
-				<button click:="the_last_one">hello!</button>
+				click:stop-immediate-propagation>
+				<button
+					data-test-id="the_last_one"
+					click:="the_last_one">hello!</button>
 			</section>
 		</section>
 	`);
@@ -28,24 +32,30 @@ async function testPropagation() {
         actionReceipts.push(e.action);
     };
     document.addEventListener("#action", cb);
-    let buttonId = await findElement("button");
+    let fails = [];
+    let buttonId = await findElement("[data-test-id=one_shot]");
     if (!buttonId)
         return "failed to query button element";
     let clickResult = await elementClick(buttonId);
     if (!clickResult)
         return "failed to click button element";
+    let nextButtonId = await findElement("[data-test-id=the_last_one]");
+    if (!nextButtonId)
+        return "failed to query button element";
+    let nextClickResult = await elementClick(nextButtonId);
+    if (!nextClickResult)
+        return "failed to click button element";
     document.removeEventListener("#action", cb);
     superAction.disconnect();
-    let fails = [];
     for (let action of actionReceipts) {
         let { kind } = action;
         if ("nooooooo" === kind || "no_dont_do_another_one" === kind) {
             fails.push(`action should not have propagated: ${kind}`);
         }
     }
-    if (2 !== actionReceipts.length)
+    if (3 !== actionReceipts.length)
         fails.push(`too many actions propagated: ${actionReceipts.length}`);
-    return "actionReceipt is undefined";
+    return fails;
 }
 export const tests = [testPropagation];
 export const options = {
