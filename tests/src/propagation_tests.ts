@@ -6,7 +6,7 @@ import {
 	ActionEventInterface,
 	ActionInterface,
 	SuperAction,
-} from "../dist/mod.js";
+} from "../../dist/mod.js";
 
 async function testPropagation() {
 	let superAction = new SuperAction({
@@ -60,9 +60,9 @@ async function testPropagation() {
 	superAction.disconnect();
 
 	for (let action of actionReceipts) {
-		let { kind } = action;
-		if ("nooooooo" === kind || "no_dont_do_another_one" === kind) {
-			return `propagation failed to stop before: "${kind}"`;
+		let { type } = action;
+		if ("nooooooo" === type || "no_dont_do_another_one" === type) {
+			return `propagation failed to stop before: "${type}"`;
 		}
 	}
 	if (3 !== actionReceipts.length)

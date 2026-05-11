@@ -6,7 +6,7 @@ import {
 	ActionEventInterface,
 	ActionInterface,
 	SuperAction,
-} from "../dist/mod.js";
+} from "../../dist/mod.js";
 
 async function testOneShotClick() {
 	let superAction = new SuperAction({
@@ -22,8 +22,8 @@ async function testOneShotClick() {
 	let actionReceipt: ActionInterface | undefined;
 
 	let cb = function (e: ActionEventInterface) {
-		let { kind } = e.action;
-		if ("one_shot_action" === kind) actionReceipt = e.action;
+		let { type } = e.action;
+		if ("one_shot_action" === type) actionReceipt = e.action;
 	};
 
 	document.addEventListener("#action", cb);

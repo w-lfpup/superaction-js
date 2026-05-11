@@ -2,7 +2,7 @@ import {
 	elementClick,
 	findElement,
 } from "@w-lfpup/jackrabbit/browser/dist/commands.js";
-import { ActionEventInterface, SuperAction } from "../dist/mod.js";
+import { ActionEventInterface, SuperAction } from "../../dist/mod.js";
 
 async function testFormSubmission() {
 	let superAction = new SuperAction({
@@ -26,8 +26,8 @@ async function testFormSubmission() {
 	let formDataReceipt: FormData | undefined;
 
 	let cb = function (e: ActionEventInterface) {
-		let { kind, formData } = e.action;
-		if ("submit_the_form" === kind && formData) formDataReceipt = formData;
+		let { type, formData } = e.action;
+		if ("submit_the_form" === type && formData) formDataReceipt = formData;
 	};
 
 	document.addEventListener("#action", cb);
