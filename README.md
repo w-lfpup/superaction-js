@@ -1,6 +1,6 @@
 # SuperAction-js
 
-A hypertext extension that enables a browser to dispatch more meaningful actions from HTML.
+A hypertext extension to dispatch meaningful actions from HTML.
 
 (It's also a proof-of-concept for [hyperevents-js](https://github.com/w-lfpup/hyperevents-js)).
 
