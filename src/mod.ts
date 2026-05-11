@@ -82,7 +82,9 @@ export class SuperAction implements SuperActionInterface {
 				if (node.hasAttribute(`${eventType}:prevent-default`))
 					originEvent.preventDefault();
 
-				if (node.hasAttribute(`${eventType}:stop-immediate-propagation`))
+				if (
+					node.hasAttribute(`${eventType}:stop-immediate-propagation`)
+				)
 					return;
 
 				let type = node.getAttribute(`${eventType}:`);
