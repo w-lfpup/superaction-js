@@ -137,7 +137,7 @@ Click button D:
 
 The `#action` event name, specifically the `#`, is used to prevent cyclical event disptaches.
 
-We can't _dynamically_ add attribtues to elements that start with `#`. And in this way, some of the infinite loop risk is mitigated.
+The browser restricts _dynamically_ adding attribtues to elements that start with `#`. And in this way, some of the infinite loop risks are mitigated.
 
 ## License
 
