@@ -1,2 +1,2 @@
-import * as InteractionTests from "./interaction.tests.js";
-export const testModules = [InteractionTests];
+import * as OneShotTests from "./quick_one_shot.tests.js";
+export const testModules = [OneShotTests];
