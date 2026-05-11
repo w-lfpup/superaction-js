@@ -1,6 +1,5 @@
 import {
 	elementClick,
-	log,
 	findElement,
 } from "@w-lfpup/jackrabbit/browser/dist/commands.js";
 import {
@@ -16,26 +15,23 @@ async function testOneShotClick() {
 	});
 
 	document.body.setHTMLUnsafe(`
-		<button click:"one_shot_action">hello!</button>
+		<button click:="one_shot_action">hello!</button>
 	`);
 
 	superAction.connect();
 	let actionReceipt: ActionInterface | undefined;
 
 	let cb = function (e: ActionEventInterface) {
-		log("callback was evoked");
 		let { kind } = e.action;
-		actionReceipt = e.action;
+		if ("one_shot_action" === kind) actionReceipt = e.action;
 	};
 
 	document.addEventListener("#action", cb);
 	let buttonId = await findElement("button");
-	await log(`button id: ${buttonId}`);
-
 	if (!buttonId) return "failed to query button element";
 
 	let clickResult = await elementClick(buttonId);
-	await log(`clickResult: ${clickResult}`);
+	if (!clickResult) return "failed to click button element";
 
 	document.removeEventListener("#action", cb);
 	superAction.disconnect();
