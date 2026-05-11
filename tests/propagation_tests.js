@@ -28,11 +28,9 @@ async function testPropagation() {
     superAction.connect();
     let actionReceipts = [];
     let cb = function (e) {
-        let { kind } = e.action;
         actionReceipts.push(e.action);
     };
     document.addEventListener("#action", cb);
-    let fails = [];
     let buttonId = await findElement("[data-test-id=one_shot]");
     if (!buttonId)
         return "failed to query button element";
@@ -50,12 +48,11 @@ async function testPropagation() {
     for (let action of actionReceipts) {
         let { kind } = action;
         if ("nooooooo" === kind || "no_dont_do_another_one" === kind) {
-            fails.push(`action should not have propagated: ${kind}`);
+            return `propagation failed to stop before: "${kind}"`;
         }
     }
     if (3 !== actionReceipts.length)
-        fails.push(`too many actions propagated: ${actionReceipts.length}`);
-    return fails;
+        return `too many actions propagated: ${actionReceipts.length}`;
 }
 export const tests = [testPropagation];
 export const options = {
