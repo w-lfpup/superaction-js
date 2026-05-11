@@ -54,7 +54,7 @@ Add an event listener to connect action events from the UI to javascript-land.
 
 ```js
 document.addEventListener("#action", (e) => {
-	let { kind, originElement, originEvent, formData } = e.action;
+	let { type, originElement, originEvent, formData } = e.action;
 
 	if ("increment" === action) {
 		// increment something!

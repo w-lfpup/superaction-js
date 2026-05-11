@@ -9,11 +9,11 @@ let count = parseFloat(countEl.textContent);
 if (Number.isNaN(count))
     count = 0;
 addEventListener("#action", function (e) {
-    let { kind } = e.action;
-    if ("increment" === kind) {
+    let { type } = e.action;
+    if ("increment" === type) {
         count += 1;
     }
-    if ("decrement" === kind) {
+    if ("decrement" === type) {
         count -= 1;
     }
     countEl.textContent = count.toString();

@@ -16,15 +16,15 @@ resizeObserver.observe(canvas);
 
 // send actions to the offscreen canvas worker
 addEventListener("#action", function (e: ActionEventInterface) {
-	let { kind, originEvent } = e.action;
+	let { type, originEvent } = e.action;
 
 	// set color action needs input value
 	if (
-		"set_color" === kind &&
+		"set_color" === type &&
 		originEvent.target instanceof HTMLInputElement
 	) {
 		worker.postMessage({
-			kind,
+			kind: type,
 			color: originEvent.target.value,
 		});
 	}
@@ -34,7 +34,7 @@ addEventListener("#action", function (e: ActionEventInterface) {
 		let { x, y, movementX, movementY } = originEvent;
 
 		worker.postMessage({
-			kind,
+			kind: type,
 			params: { x, y, movementX, movementY },
 		});
 	}
