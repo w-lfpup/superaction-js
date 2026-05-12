@@ -6,6 +6,15 @@ A hypertext extension to upgrade your HTML with a declarative eventbus.
 
 [![tests](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml)
 
+## Examples
+
+Superaction is little different compared to most frontend libraries. HTML declares
+what actions are sent to javascript-land similar to a classic eventbus.
+
+Checkout how to build a simple click [counter](./examples/counter/) ([live example](https://w-lfpup.github.io/superaction-js/examples/counter/)).
+
+And then look at more interesting example and [sketch](./examples/sketch/) on an offscreen canvas ([live example](https://w-lfpup.github.io/superaction-js/examples/sketch/)).
+
 ## Install
 
 Install via npm.
