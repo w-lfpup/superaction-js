@@ -5,7 +5,7 @@ declare global {
 }
 
 export interface ActionInterface {
-	kind: string;
+	type: string;
 	formData?: FormData;
 	originElement: EventTarget;
 	originEvent: Event;
@@ -71,7 +71,7 @@ export class SuperAction implements SuperActionInterface {
 	}
 
 	#dispatch(originEvent: Event) {
-		let { type, currentTarget, target } = originEvent;
+		let { type: eventType, currentTarget, target } = originEvent;
 		if (!currentTarget) return;
 
 		let formData: FormData | undefined;
@@ -79,24 +79,26 @@ export class SuperAction implements SuperActionInterface {
 
 		for (let node of originEvent.composedPath()) {
 			if (node instanceof Element) {
-				if (node.hasAttribute(`${type}:prevent-default`))
+				if (node.hasAttribute(`${eventType}:prevent-default`))
 					originEvent.preventDefault();
 
-				if (node.hasAttribute(`${type}:stop-immediate-propagation`))
+				if (
+					node.hasAttribute(`${eventType}:stop-immediate-propagation`)
+				)
 					return;
 
-				let kind = node.getAttribute(`${type}:`);
-				if (kind) {
-					let composed = node.hasAttribute(`${type}:composed`);
+				let type = node.getAttribute(`${eventType}:`);
+				if (type) {
+					let composed = node.hasAttribute(`${eventType}:composed`);
 					let event = new ActionEvent(
-						{ kind, originElement: node, originEvent, formData },
+						{ type, originElement: node, originEvent, formData },
 						{ bubbles: true, composed },
 					);
 
 					this.#target.dispatchEvent(event);
 				}
 
-				if (node.hasAttribute(`${type}:stop-propagation`)) return;
+				if (node.hasAttribute(`${eventType}:stop-propagation`)) return;
 			}
 		}
 	}

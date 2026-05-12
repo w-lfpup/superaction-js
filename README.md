@@ -1,13 +1,14 @@
 # SuperAction-js
 
-A hypertext extension to dispatch meaningful actions from HTML.
+A hypertext extension to upgrade your HTML with a declarative eventbus.
 
-[![builds](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/builds.yml)
+(It's also a proof-of-concept for [hyperevents-js](https://github.com/w-lfpup/hyperevents-js)).
+
+[![tests](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml)
 
 ## Install
 
 Install via npm.
-,
 
 ```sh
 npm install --save-dev @w-lfpup/superaction
@@ -30,12 +31,12 @@ import { SuperAction } from "superaction";
 
 const _superAction = new SuperAction({
 	host: document,
-	connected: true,
 	eventNames: ["click"],
+	connected: true,
 });
 ```
 
-Now the DOM can declarativey dispatch meaningful messages from HTML to Javascript-land.
+Now the DOM can declarativey dispatch meaningful messages from HTML to Javascript-land because `SuperAction` effectively works like a classic eventbus!
 
 ## Declare
 
@@ -53,7 +54,7 @@ Add an event listener to connect action events from the UI to javascript-land.
 
 ```js
 document.addEventListener("#action", (e) => {
-	let { kind, originElement, originEvent, formData } = e.action;
+	let { type, originElement, originEvent, formData } = e.action;
 
 	if ("increment" === action) {
 		// increment something!
@@ -136,7 +137,7 @@ Click button D:
 
 The `#action` event name, specifically the `#`, is used to prevent cyclical event disptaches.
 
-We can't _dynamically_ add attribtues to elements that start with `#`. And in this way, some of the infinite loop risk is mitigated.
+The browser restricts _dynamically_ adding attribtues to elements that start with `#`. And in this way, some of the infinite loop risks are mitigated.
 
 ## License
 
