@@ -24,4 +24,4 @@ jobs:
             - name: Install
               run: npm ci
             - name: Test browsers
-              run: npx jackrabbit_webdriver .github/workflows/browsers.macos.json tests/mod.js
+              run: npx jackrabbit_webdriver .github/workflows/browsers.macos.json tests/dist/mod.js
