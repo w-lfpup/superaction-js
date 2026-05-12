@@ -8,12 +8,12 @@ A hypertext extension to upgrade your HTML with a declarative eventbus.
 
 ## Examples
 
-Superaction works a little differently than most frontend libraries. HTML declares
-what actions are sent to javascript-land.
+Superaction is little different compared to most frontend libraries. HTML declares
+what actions are sent to javascript-land similar to a classic eventbus.
 
-Checkout how to build a simple click [counter](https://github.com/w-lfpup/superaction-js/tree/main/examples/counter/) ([live example](https://w-lfpup.github.io/superaction-js/examples/counter/)).
+Checkout how to build a simple click [counter](./examples/counter/) ([live example](https://w-lfpup.github.io/superaction-js/examples/counter/)).
 
-And then look at more interesting example and [draw](https://github.com/w-lfpup/superaction-js/tree/main/examples/sketch/) an offscreen canvas ([live example](https://w-lfpup.github.io/superaction-js/examples/sketch/)).
+And then look at more interesting example and [draw](./examples/sketch/) an offscreen canvas ([live example](https://w-lfpup.github.io/superaction-js/examples/sketch/)).
 
 ## Install
 
