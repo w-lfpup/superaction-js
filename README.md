@@ -1,6 +1,6 @@
 # SuperAction-js
 
-A hypertext extension to dispatch meaningful actions from HTML.
+A hypertext extension to upgrade your HTML with a declarative eventbus.
 
 (It's also a proof-of-concept for [hyperevents-js](https://github.com/w-lfpup/hyperevents-js)).
 
