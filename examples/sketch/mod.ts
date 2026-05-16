@@ -16,22 +16,19 @@ resizeObserver.observe(canvas);
 
 // send actions to the offscreen canvas worker
 addEventListener("#action", function (e: ActionEventInterface) {
-	let { type, originEvent } = e.action;
+	let { type, event } = e.action;
 
 	// set color action needs input value
-	if (
-		"set_color" === type &&
-		originEvent.target instanceof HTMLInputElement
-	) {
+	if ("set_color" === type && event.target instanceof HTMLInputElement) {
 		worker.postMessage({
 			kind: type,
-			color: originEvent.target.value,
+			color: event.target.value,
 		});
 	}
 
 	// other pointer actions
-	if (originEvent instanceof PointerEvent) {
-		let { x, y, movementX, movementY } = originEvent;
+	if (event instanceof PointerEvent) {
+		let { x, y, movementX, movementY } = event;
 
 		worker.postMessage({
 			kind: type,

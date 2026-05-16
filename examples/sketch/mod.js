@@ -10,16 +10,15 @@ const offscreenCanvas = canvas.transferControlToOffscreen();
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 addEventListener("#action", function (e) {
-    let { type, originEvent } = e.action;
-    if ("set_color" === type &&
-        originEvent.target instanceof HTMLInputElement) {
+    let { type, event } = e.action;
+    if ("set_color" === type && event.target instanceof HTMLInputElement) {
         worker.postMessage({
             kind: type,
-            color: originEvent.target.value,
+            color: event.target.value,
         });
     }
-    if (originEvent instanceof PointerEvent) {
-        let { x, y, movementX, movementY } = originEvent;
+    if (event instanceof PointerEvent) {
+        let { x, y, movementX, movementY } = event;
         worker.postMessage({
             kind: type,
             params: { x, y, movementX, movementY },

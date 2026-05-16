@@ -7,8 +7,8 @@ declare global {
 export interface ActionInterface {
 	type: string;
 	formData?: FormData;
-	originElement: EventTarget;
-	originEvent: Event;
+	target: EventTarget;
+	event: Event;
 }
 
 export interface ActionEventInterface extends Event {
@@ -38,8 +38,6 @@ export class ActionEvent extends Event implements ActionEventInterface {
 
 export class SuperAction implements SuperActionInterface {
 	#connected = false;
-	#boundDispatch = this.#dispatch.bind(this);
-
 	#params: SuperActionParamsInterface;
 	#target: EventTarget;
 
@@ -56,7 +54,7 @@ export class SuperAction implements SuperActionInterface {
 
 		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
-			host.addEventListener(name, this.#boundDispatch);
+			host.addEventListener(name, this.#dispatch);
 		}
 	}
 
@@ -66,39 +64,38 @@ export class SuperAction implements SuperActionInterface {
 
 		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
-			host.removeEventListener(name, this.#boundDispatch);
+			host.removeEventListener(name, this.#dispatch);
 		}
 	}
 
-	#dispatch(originEvent: Event) {
-		let { type: eventType, currentTarget, target } = originEvent;
+	#dispatch = this.#unboundDispatch.bind(this);
+	#unboundDispatch(event: Event) {
+		let { type, currentTarget, target } = event;
 		if (!currentTarget) return;
 
 		let formData: FormData | undefined;
 		if (target instanceof HTMLFormElement) formData = new FormData(target);
 
-		for (let node of originEvent.composedPath()) {
+		for (let node of event.composedPath()) {
 			if (node instanceof Element) {
-				if (node.hasAttribute(`${eventType}:prevent-default`))
-					originEvent.preventDefault();
+				if (node.hasAttribute(`${type}:prevent-default`))
+					event.preventDefault();
 
-				if (
-					node.hasAttribute(`${eventType}:stop-immediate-propagation`)
-				)
+				if (node.hasAttribute(`${type}:stop-immediate-propagation`))
 					return;
 
-				let type = node.getAttribute(`${eventType}:`);
-				if (type) {
-					let composed = node.hasAttribute(`${eventType}:composed`);
-					let event = new ActionEvent(
-						{ type, originElement: node, originEvent, formData },
+				let actionType = node.getAttribute(`${type}:`);
+				if (actionType) {
+					let composed = node.hasAttribute(`${type}:composed`);
+					let actionEvent = new ActionEvent(
+						{ type: actionType, target: node, event, formData },
 						{ bubbles: true, composed },
 					);
 
-					this.#target.dispatchEvent(event);
+					this.#target.dispatchEvent(actionEvent);
 				}
 
-				if (node.hasAttribute(`${eventType}:stop-propagation`)) return;
+				if (node.hasAttribute(`${type}:stop-propagation`)) return;
 			}
 		}
 	}

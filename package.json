@@ -4,7 +4,7 @@
 	"main": "dist/mod.js",
 	"description": "A hypertext extension to dispatch meaningful actions from UI events",
 	"license": "BSD-3-Clause",
-	"version": "0.3.1",
+	"version": "0.4.0",
 	"scripts": {
 		"prepare": "npm run build",
 		"build": "npm run build:core && npm run build:examples && npm run build:tests",
