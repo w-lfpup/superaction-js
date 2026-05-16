@@ -6,8 +6,8 @@ declare global {
 export interface ActionInterface {
     type: string;
     formData?: FormData;
-    originElement: EventTarget;
-    originEvent: Event;
+    target: EventTarget;
+    event: Event;
 }
 export interface ActionEventInterface extends Event {
     action: ActionInterface;
