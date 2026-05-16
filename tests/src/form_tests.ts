@@ -4,8 +4,15 @@ import {
 } from "@w-lfpup/jackrabbit/browser/dist/commands.js";
 import { ActionEventInterface, SuperAction } from "../../dist/mod.js";
 
-async function testFormSubmission() {
-	let superAction = new SuperAction({
+let superAction: SuperAction;
+let formDataReceipt: FormData | undefined;
+let cb = function (e: ActionEventInterface) {
+	let { type, formData } = e.action;
+	if ("submit_the_form" === type && formData) formDataReceipt = formData;
+};
+
+function setup() {
+	superAction = new SuperAction({
 		host: document,
 		connected: true,
 		eventNames: ["submit"],
@@ -23,21 +30,15 @@ async function testFormSubmission() {
 	`);
 
 	superAction.connect();
-	let formDataReceipt: FormData | undefined;
-
-	let cb = function (e: ActionEventInterface) {
-		let { type, formData } = e.action;
-		if ("submit_the_form" === type && formData) formDataReceipt = formData;
-	};
-
 	document.addEventListener("#action", cb);
+}
 
+async function testFormSubmission() {
 	let buttonId = await findElement("button");
 	if (!buttonId) return "failed to query button element";
 	await elementClick(buttonId);
 
 	document.removeEventListener("#action", cb);
-	superAction.disconnect();
 
 	if (formDataReceipt) {
 		let entry = formDataReceipt.get("boy-kisser");
@@ -48,7 +49,12 @@ async function testFormSubmission() {
 	return "formData not found";
 }
 
-export const tests = [testFormSubmission];
+function tearDown() {
+	superAction.disconnect();
+	document.removeEventListener("#action", cb);
+}
+
+export const tests = [setup, testFormSubmission, tearDown];
 
 export const options = {
 	title: import.meta.url,

@@ -8,8 +8,14 @@ import {
 	SuperAction,
 } from "../../dist/mod.js";
 
-async function testPropagation() {
-	let superAction = new SuperAction({
+let superAction: SuperAction;
+let actionReceipts: ActionInterface[] = [];
+let cb = function (e: ActionEventInterface) {
+	actionReceipts.push(e.action);
+};
+
+function setup() {
+	superAction = new SuperAction({
 		host: document,
 		connected: true,
 		eventNames: ["click"],
@@ -36,14 +42,10 @@ async function testPropagation() {
 	`);
 
 	superAction.connect();
-	let actionReceipts: ActionInterface[] = [];
-
-	let cb = function (e: ActionEventInterface) {
-		actionReceipts.push(e.action);
-	};
-
 	document.addEventListener("#action", cb);
+}
 
+async function testPropagation() {
 	let buttonId = await findElement("[data-test-id=one_shot]");
 	if (!buttonId) return "failed to query button element";
 
@@ -56,9 +58,6 @@ async function testPropagation() {
 	let nextClickResult = await elementClick(nextButtonId);
 	if (!nextClickResult) return "failed to click button element";
 
-	document.removeEventListener("#action", cb);
-	superAction.disconnect();
-
 	for (let action of actionReceipts) {
 		let { type } = action;
 		if ("nooooooo" === type || "no_dont_do_another_one" === type) {
@@ -69,7 +68,12 @@ async function testPropagation() {
 		return `too many actions propagated: ${actionReceipts.length}`;
 }
 
-export const tests = [testPropagation];
+function tearDown() {
+	document.removeEventListener("#action", cb);
+	superAction.disconnect();
+}
+
+export const tests = [setup, testPropagation, tearDown];
 
 export const options = {
 	title: import.meta.url,
