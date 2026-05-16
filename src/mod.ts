@@ -38,8 +38,6 @@ export class ActionEvent extends Event implements ActionEventInterface {
 
 export class SuperAction implements SuperActionInterface {
 	#connected = false;
-	#boundDispatch = this.#dispatch.bind(this);
-
 	#params: SuperActionParamsInterface;
 	#target: EventTarget;
 
@@ -56,7 +54,7 @@ export class SuperAction implements SuperActionInterface {
 
 		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
-			host.addEventListener(name, this.#boundDispatch);
+			host.addEventListener(name, this.#dispatch);
 		}
 	}
 
@@ -66,11 +64,12 @@ export class SuperAction implements SuperActionInterface {
 
 		let { host, eventNames } = this.#params;
 		for (let name of eventNames) {
-			host.removeEventListener(name, this.#boundDispatch);
+			host.removeEventListener(name, this.#dispatch);
 		}
 	}
 
-	#dispatch(event: Event) {
+	#dispatch = this.#unboundDispatch.bind(this);
+	#unboundDispatch(event: Event) {
 		let { type, currentTarget, target } = event;
 		if (!currentTarget) return;
 
