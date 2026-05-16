@@ -11,8 +11,7 @@ const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 addEventListener("#action", function (e) {
     let { type, event } = e.action;
-    if ("set_color" === type &&
-        event.target instanceof HTMLInputElement) {
+    if ("set_color" === type && event.target instanceof HTMLInputElement) {
         worker.postMessage({
             kind: type,
             color: event.target.value,
