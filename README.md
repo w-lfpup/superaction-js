@@ -11,9 +11,9 @@ A hypertext extension to upgrade your HTML with a declarative eventbus.
 Superaction is little different compared to most frontend libraries. HTML declares
 what actions are sent to javascript-land similar to a classic eventbus.
 
-Checkout how to build a simple click [counter](./examples/counter/) ([live example](https://w-lfpup.github.io/superaction-js/examples/counter/)).
+Check out a simple click [counter](./examples/counter/) ([live example](https://w-lfpup.github.io/superaction-js/examples/counter/)).
 
-And then look at more interesting example and [sketch](./examples/sketch/) on an offscreen canvas ([live example](https://w-lfpup.github.io/superaction-js/examples/sketch/)).
+Then look at more interesting [sketch](./examples/sketch/) example and learn how to connect UI events to an offscreen canvas ([live example](https://w-lfpup.github.io/superaction-js/examples/sketch/)).
 
 ## Install
 
@@ -49,7 +49,7 @@ Now the DOM can declarativey dispatch meaningful messages from HTML to Javascrip
 
 ## Declare
 
-Add an attribute with the pattern `event:=action`. The `#action` event will dispatch from the `host` element
+Add an attribute with the pattern `event:=action`. The `#action` event will dispatch from the `host` element.
 
 ```html
 <button click:="increment">+</button>
@@ -59,16 +59,27 @@ Add an attribute with the pattern `event:=action`. The `#action` event will disp
 
 Now the `button` will dispatch an `ActionEvent` from the `host` when clicked.
 
-Add an event listener to connect action events from the UI to javascript-land.
+Add an event listener to connect action events to javascript-land.
 
 ```js
 document.addEventListener("#action", (e) => {
-	let { type, target, event, formData } = e.action;
+	let { type } = e.action;
 
-	if ("increment" === action) {
+	if ("increment" === type) {
 		// increment something!
 	}
 });
+```
+
+The `action` object has several properties related to an action event including:
+
+- the action `type`
+- the original dom `event`
+- the action event `target`
+- associated `formData`
+
+```js
+let { type, event, target, formData } = e.action;
 ```
 
 Form data is available when action events originate from form elements.
