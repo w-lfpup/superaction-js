@@ -17,6 +17,7 @@ export interface SuperActionParamsInterface {
     eventNames: string[];
     host: EventTarget;
     target?: EventTarget;
+    infix?: string;
 }
 export interface SuperActionInterface {
     connect(): void;

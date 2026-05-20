@@ -41,19 +41,20 @@ export class SuperAction {
         let formData;
         if (target instanceof HTMLFormElement)
             formData = new FormData(target);
+        let { infix } = this.#params;
         for (let node of event.composedPath()) {
             if (node instanceof Element) {
-                if (node.hasAttribute(`${type}:prevent-default`))
+                if (node.hasAttribute(`${type}${infix}prevent-default`))
                     event.preventDefault();
-                if (node.hasAttribute(`${type}:stop-immediate-propagation`))
+                if (node.hasAttribute(`${type}${infix}stop-immediate-propagation`))
                     return;
-                let actionType = node.getAttribute(`${type}:`);
+                let actionType = node.getAttribute(`${type}${infix}`);
                 if (actionType) {
-                    let composed = node.hasAttribute(`${type}:composed`);
+                    let composed = node.hasAttribute(`${type}${infix}composed`);
                     let actionEvent = new ActionEvent({ type: actionType, target: node, event, formData }, { bubbles: true, composed });
                     this.#target.dispatchEvent(actionEvent);
                 }
-                if (node.hasAttribute(`${type}:stop-propagation`))
+                if (node.hasAttribute(`${type}${infix}stop-propagation`))
                     return;
             }
         }
