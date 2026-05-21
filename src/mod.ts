@@ -20,6 +20,7 @@ export interface SuperActionParamsInterface {
 	eventNames: string[];
 	host: EventTarget;
 	target?: EventTarget;
+	infix?: string;
 }
 
 export interface SuperActionInterface {
@@ -76,17 +77,22 @@ export class SuperAction implements SuperActionInterface {
 		let formData: FormData | undefined;
 		if (target instanceof HTMLFormElement) formData = new FormData(target);
 
+		let infix = this.#params.infix ?? ":";
 		for (let node of event.composedPath()) {
 			if (node instanceof Element) {
-				if (node.hasAttribute(`${type}:prevent-default`))
+				if (node.hasAttribute(`${type}${infix}prevent-default`))
 					event.preventDefault();
 
-				if (node.hasAttribute(`${type}:stop-immediate-propagation`))
+				if (
+					node.hasAttribute(
+						`${type}${infix}stop-immediate-propagation`,
+					)
+				)
 					return;
 
-				let actionType = node.getAttribute(`${type}:`);
+				let actionType = node.getAttribute(`${type}${infix}`);
 				if (actionType) {
-					let composed = node.hasAttribute(`${type}:composed`);
+					let composed = node.hasAttribute(`${type}${infix}composed`);
 					let actionEvent = new ActionEvent(
 						{ type: actionType, target: node, event, formData },
 						{ bubbles: true, composed },
@@ -95,7 +101,8 @@ export class SuperAction implements SuperActionInterface {
 					this.#target.dispatchEvent(actionEvent);
 				}
 
-				if (node.hasAttribute(`${type}:stop-propagation`)) return;
+				if (node.hasAttribute(`${type}${infix}stop-propagation`))
+					return;
 			}
 		}
 	}
