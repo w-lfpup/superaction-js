@@ -41,7 +41,7 @@ export class SuperAction {
         let formData;
         if (target instanceof HTMLFormElement)
             formData = new FormData(target);
-        let { infix } = this.#params;
+        let infix = this.#params.infix ?? ":";
         for (let node of event.composedPath()) {
             if (node instanceof Element) {
                 if (node.hasAttribute(`${type}${infix}prevent-default`))
