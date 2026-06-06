@@ -19,18 +19,16 @@ export class SuperAction {
         if (this.#connected)
             return;
         this.#connected = true;
-        let { host, eventNames } = this.#params;
-        for (let name of eventNames) {
-            host.addEventListener(name, this.#dispatch);
+        for (let name of this.#params.eventNames) {
+            this.#params.host.addEventListener(name, this.#dispatch);
         }
     }
     disconnect() {
         if (!this.#connected)
             return;
         this.#connected = false;
-        let { host, eventNames } = this.#params;
-        for (let name of eventNames) {
-            host.removeEventListener(name, this.#dispatch);
+        for (let name of this.#params.eventNames) {
+            this.#params.host.removeEventListener(name, this.#dispatch);
         }
     }
     #dispatch = this.#unboundDispatch.bind(this);
@@ -50,8 +48,7 @@ export class SuperAction {
                     return;
                 let actionType = node.getAttribute(`${type}${infix}`);
                 if (actionType) {
-                    let composed = node.hasAttribute(`${type}${infix}composed`);
-                    let actionEvent = new ActionEvent({ type: actionType, target: node, event, formData }, { bubbles: true, composed });
+                    let actionEvent = new ActionEvent({ type: actionType, target: node, event, formData }, { bubbles: true });
                     this.#target.dispatchEvent(actionEvent);
                 }
                 if (node.hasAttribute(`${type}${infix}stop-propagation`))

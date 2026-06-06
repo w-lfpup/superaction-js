@@ -1,7 +1,7 @@
 import {
 	elementClick,
 	findElement,
-} from "@w-lfpup/jackrabbit/browser/dist/commands.js";
+} from "@w-lfpup/jackrabbit";
 import {
 	ActionEventInterface,
 	ActionInterface,

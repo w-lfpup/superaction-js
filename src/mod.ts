@@ -53,9 +53,8 @@ export class SuperAction implements SuperActionInterface {
 		if (this.#connected) return;
 		this.#connected = true;
 
-		let { host, eventNames } = this.#params;
-		for (let name of eventNames) {
-			host.addEventListener(name, this.#dispatch);
+		for (let name of this.#params.eventNames) {
+			this.#params.host.addEventListener(name, this.#dispatch);
 		}
 	}
 
@@ -63,9 +62,8 @@ export class SuperAction implements SuperActionInterface {
 		if (!this.#connected) return;
 		this.#connected = false;
 
-		let { host, eventNames } = this.#params;
-		for (let name of eventNames) {
-			host.removeEventListener(name, this.#dispatch);
+		for (let name of this.#params.eventNames) {
+			this.#params.host.removeEventListener(name, this.#dispatch);
 		}
 	}
 
@@ -92,10 +90,9 @@ export class SuperAction implements SuperActionInterface {
 
 				let actionType = node.getAttribute(`${type}${infix}`);
 				if (actionType) {
-					let composed = node.hasAttribute(`${type}${infix}composed`);
 					let actionEvent = new ActionEvent(
 						{ type: actionType, target: node, event, formData },
-						{ bubbles: true, composed },
+						{ bubbles: true },
 					);
 
 					this.#target.dispatchEvent(actionEvent);
