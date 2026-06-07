@@ -74,7 +74,7 @@ export class SuperAction implements SuperActionInterface {
 		let { type, currentTarget, target } = event;
 		if (!currentTarget) return;
 
-		let { infix = ":"} = this.#params;
+		let { infix = ":" } = this.#params;
 		for (let node of event.composedPath()) {
 			if (node instanceof Element) {
 				if (node.hasAttribute(`${type}${infix}prevent-default`))
