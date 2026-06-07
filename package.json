@@ -4,7 +4,7 @@
 	"main": "dist/mod.js",
 	"description": "A hypertext extension to dispatch meaningful actions from UI events",
 	"license": "BSD-3-Clause",
-	"version": "0.4.3",
+	"version": "0.4.4",
 	"scripts": {
 		"prepare": "npm run build",
 		"build": "npm run build:core && npm run build:examples && npm run build:tests",
@@ -16,7 +16,7 @@
 		"format": "npx prettier ./ --write"
 	},
 	"devDependencies": {
-		"@w-lfpup/jackrabbit": "^0.3.2",
+		"@w-lfpup/jackrabbit": "^0.3.3",
 		"prettier": "^3.8.3",
 		"typescript": "^6.0.2"
 	},
