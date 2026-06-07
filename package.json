@@ -16,7 +16,7 @@
 		"format": "npx prettier ./ --write"
 	},
 	"devDependencies": {
-		"@w-lfpup/jackrabbit": "file:../jackrabbit-js",
+		"@w-lfpup/jackrabbit": "^0.3.3",
 		"prettier": "^3.8.3",
 		"typescript": "^6.0.2"
 	},

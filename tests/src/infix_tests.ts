@@ -1,7 +1,4 @@
-import {
-	elementClick,
-	findElement,
-} from "@w-lfpup/jackrabbit";
+import { elementClick, findElement } from "@w-lfpup/jackrabbit";
 import {
 	ActionEventInterface,
 	ActionInterface,

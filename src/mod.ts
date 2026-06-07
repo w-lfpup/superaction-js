@@ -72,9 +72,6 @@ export class SuperAction implements SuperActionInterface {
 		let { type, currentTarget, target } = event;
 		if (!currentTarget) return;
 
-		let formData: FormData | undefined;
-		if (target instanceof HTMLFormElement) formData = new FormData(target);
-
 		let infix = this.#params.infix ?? ":";
 		for (let node of event.composedPath()) {
 			if (node instanceof Element) {
@@ -90,6 +87,10 @@ export class SuperAction implements SuperActionInterface {
 
 				let actionType = node.getAttribute(`${type}${infix}`);
 				if (actionType) {
+					let formData: FormData | undefined;
+					if (target instanceof HTMLFormElement)
+						formData = new FormData(target);
+
 					let actionEvent = new ActionEvent(
 						{ type: actionType, target: node, event, formData },
 						{ bubbles: true },
