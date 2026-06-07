@@ -2,9 +2,9 @@
 	"name": "@w-lfpup/superaction",
 	"type": "module",
 	"main": "dist/mod.js",
-	"description": "A hypertext extension to dispatch meaningful actions from UI events",
+	"description": "Turn the DOM into a declarative event-bus",
 	"license": "BSD-3-Clause",
-	"version": "0.4.4",
+	"version": "0.4.5",
 	"scripts": {
 		"prepare": "npm run build",
 		"build": "npm run build:core && npm run build:examples && npm run build:tests",

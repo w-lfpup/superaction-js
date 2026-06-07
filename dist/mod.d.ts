@@ -2,6 +2,9 @@ declare global {
     interface GlobalEventHandlersEventMap {
         ["#action"]: ActionEventInterface;
     }
+    interface ElementEventMap {
+        ["#action"]: ActionEventInterface;
+    }
 }
 export interface ActionInterface {
     type: string;
