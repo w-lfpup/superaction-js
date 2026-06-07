@@ -17,7 +17,7 @@ export interface ActionInterface {
 export interface ActionEventInterface extends Event {
 	action: ActionInterface;
 }
-type hello = HTMLElementEventMap;
+
 export interface SuperActionParamsInterface {
 	connected?: boolean;
 	eventNames: string[];
