@@ -8,11 +8,9 @@ export class ActionEvent extends Event {
 export class SuperAction {
     #connected = false;
     #params;
-    // #target: EventTarget;
     #dispatch = this.#unboundDispatch.bind(this);
     constructor(params) {
-        this.#params = { ...params };
-        // this.#target = params.target ?? params.host;
+        this.#params = params;
         if (this.#params.connected)
             this.connect();
     }
