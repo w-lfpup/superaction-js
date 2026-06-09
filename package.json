@@ -4,7 +4,7 @@
 	"main": "dist/mod.js",
 	"description": "Turn the DOM into a declarative event-bus",
 	"license": "BSD-3-Clause",
-	"version": "0.4.6",
+	"version": "0.5.1",
 	"scripts": {
 		"prepare": "npm run build",
 		"build": "npm run build:core && npm run build:examples && npm run build:tests",
