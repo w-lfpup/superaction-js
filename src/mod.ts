@@ -43,11 +43,10 @@ export class ActionEvent extends Event implements ActionEventInterface {
 export class SuperAction implements SuperActionInterface {
 	#connected = false;
 	#params: SuperActionParamsInterface;
-	#target: EventTarget;
+	#dispatch = this.#unboundDispatch.bind(this);
 
 	constructor(params: SuperActionParamsInterface) {
-		this.#params = { ...params };
-		this.#target = params.target ?? params.host;
+		this.#params = params;
 
 		if (this.#params.connected) this.connect();
 	}
@@ -72,41 +71,40 @@ export class SuperAction implements SuperActionInterface {
 		}
 	}
 
-	#dispatch = this.#unboundDispatch.bind(this);
 	#unboundDispatch(event: Event) {
-		let { type, currentTarget, target } = event;
-		if (!currentTarget) return;
+		dispatch(this.#params, event);
+	}
+}
 
-		let { infix = ":" } = this.#params;
-		for (let node of event.composedPath()) {
-			if (node instanceof Element) {
-				if (node.hasAttribute(`${type}${infix}prevent-default`))
-					event.preventDefault();
+function dispatch(params: SuperActionParamsInterface, event: Event) {
+	let { host, target: dispatchTarget = host, infix = ":" } = params;
+	let { type } = event;
 
-				if (
-					node.hasAttribute(
-						`${type}${infix}stop-immediate-propagation`,
-					)
-				)
-					return;
+	for (let target of event.composedPath()) {
+		if (!(target instanceof Element)) continue;
 
-				let actionType = node.getAttribute(`${type}${infix}`);
-				if (actionType) {
-					let formData: FormData | undefined;
-					if (target instanceof HTMLFormElement)
-						formData = new FormData(target);
+		if (target.hasAttribute(`${type}${infix}prevent-default`))
+			event.preventDefault();
 
-					let actionEvent = new ActionEvent(
-						{ type: actionType, target: node, event, formData },
-						{ bubbles: true },
-					);
+		if (target.hasAttribute(`${type}${infix}stop-immediate-propagation`))
+			return;
 
-					this.#target.dispatchEvent(actionEvent);
-				}
+		let actionType = target.getAttribute(`${type}${infix}`);
+		if (actionType) {
+			let formData: FormData | undefined;
+			if (target instanceof HTMLFormElement)
+				formData = new FormData(target);
 
-				if (node.hasAttribute(`${type}${infix}stop-propagation`))
-					return;
-			}
+			let actionEvent = new ActionEvent({
+				type: actionType,
+				target,
+				event,
+				formData,
+			});
+
+			dispatchTarget.dispatchEvent(actionEvent);
 		}
+
+		if (target.hasAttribute(`${type}${infix}stop-propagation`)) return;
 	}
 }
