@@ -44,6 +44,7 @@ export class SuperAction implements SuperActionInterface {
 	#connected = false;
 	#params: SuperActionParamsInterface;
 	#target: EventTarget;
+	#dispatch = this.#unboundDispatch.bind(this);
 
 	constructor(params: SuperActionParamsInterface) {
 		this.#params = { ...params };
@@ -72,38 +73,43 @@ export class SuperAction implements SuperActionInterface {
 		}
 	}
 
-	#dispatch = this.#unboundDispatch.bind(this);
 	#unboundDispatch(event: Event) {
-		let { type, currentTarget, target } = event;
-		if (!currentTarget) return;
+		dispatch(event, this.#target, this.#params.infix);
+	}
+}
 
-		let { infix = ":" } = this.#params;
-		for (let node of event.composedPath()) {
-			if (!(node instanceof Element)) continue;
+function dispatch(
+	event: Event,
+	dispatchTarget: EventTarget,
+	infix: string = ":",
+) {
+	let { type } = event;
 
-			if (node.hasAttribute(`${type}${infix}prevent-default`))
-				event.preventDefault();
+	for (let target of event.composedPath()) {
+		if (!(target instanceof Element)) continue;
 
-			if (node.hasAttribute(`${type}${infix}stop-immediate-propagation`))
-				return;
+		if (target.hasAttribute(`${type}${infix}prevent-default`))
+			event.preventDefault();
 
-			let actionType = node.getAttribute(`${type}${infix}`);
-			if (actionType) {
-				let formData: FormData | undefined;
-				if (target instanceof HTMLFormElement)
-					formData = new FormData(target);
+		if (target.hasAttribute(`${type}${infix}stop-immediate-propagation`))
+			return;
 
-				let actionEvent = new ActionEvent({
-					type: actionType,
-					target: node,
-					event,
-					formData,
-				});
+		let actionType = target.getAttribute(`${type}${infix}`);
+		if (actionType) {
+			let formData: FormData | undefined;
+			if (target instanceof HTMLFormElement)
+				formData = new FormData(target);
 
-				this.#target.dispatchEvent(actionEvent);
-			}
+			let actionEvent = new ActionEvent({
+				type: actionType,
+				target,
+				event,
+				formData,
+			});
 
-			if (node.hasAttribute(`${type}${infix}stop-propagation`)) return;
+			dispatchTarget.dispatchEvent(actionEvent);
 		}
+
+		if (target.hasAttribute(`${type}${infix}stop-propagation`)) return;
 	}
 }
