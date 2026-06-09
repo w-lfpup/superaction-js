@@ -96,10 +96,12 @@ export class SuperAction implements SuperActionInterface {
 					if (target instanceof HTMLFormElement)
 						formData = new FormData(target);
 
-					let actionEvent = new ActionEvent(
-						{ type: actionType, target: node, event, formData },
-						{ bubbles: true },
-					);
+					let actionEvent = new ActionEvent({
+						type: actionType,
+						target: node,
+						event,
+						formData,
+					});
 
 					this.#target.dispatchEvent(actionEvent);
 				}
