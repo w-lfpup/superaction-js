@@ -79,36 +79,31 @@ export class SuperAction implements SuperActionInterface {
 
 		let { infix = ":" } = this.#params;
 		for (let node of event.composedPath()) {
-			if (node instanceof Element) {
-				if (node.hasAttribute(`${type}${infix}prevent-default`))
-					event.preventDefault();
+			if (!(node instanceof Element)) continue;
 
-				if (
-					node.hasAttribute(
-						`${type}${infix}stop-immediate-propagation`,
-					)
-				)
-					return;
+			if (node.hasAttribute(`${type}${infix}prevent-default`))
+				event.preventDefault();
 
-				let actionType = node.getAttribute(`${type}${infix}`);
-				if (actionType) {
-					let formData: FormData | undefined;
-					if (target instanceof HTMLFormElement)
-						formData = new FormData(target);
+			if (node.hasAttribute(`${type}${infix}stop-immediate-propagation`))
+				return;
 
-					let actionEvent = new ActionEvent({
-						type: actionType,
-						target: node,
-						event,
-						formData,
-					});
+			let actionType = node.getAttribute(`${type}${infix}`);
+			if (actionType) {
+				let formData: FormData | undefined;
+				if (target instanceof HTMLFormElement)
+					formData = new FormData(target);
 
-					this.#target.dispatchEvent(actionEvent);
-				}
+				let actionEvent = new ActionEvent({
+					type: actionType,
+					target: node,
+					event,
+					formData,
+				});
 
-				if (node.hasAttribute(`${type}${infix}stop-propagation`))
-					return;
+				this.#target.dispatchEvent(actionEvent);
 			}
+
+			if (node.hasAttribute(`${type}${infix}stop-propagation`)) return;
 		}
 	}
 }
