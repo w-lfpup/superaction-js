@@ -8,11 +8,11 @@ export class ActionEvent extends Event {
 export class SuperAction {
     #connected = false;
     #params;
-    #target;
+    // #target: EventTarget;
     #dispatch = this.#unboundDispatch.bind(this);
     constructor(params) {
         this.#params = { ...params };
-        this.#target = params.target ?? params.host;
+        // this.#target = params.target ?? params.host;
         if (this.#params.connected)
             this.connect();
     }
@@ -35,10 +35,11 @@ export class SuperAction {
         }
     }
     #unboundDispatch(event) {
-        dispatch(event, this.#target, this.#params.infix);
+        dispatch(this.#params, event);
     }
 }
-function dispatch(event, dispatchTarget, infix = ":") {
+function dispatch(params, event) {
+    let { host, target: dispatchTarget = host, infix = ":" } = params;
     let { type } = event;
     for (let target of event.composedPath()) {
         if (!(target instanceof Element))

@@ -43,12 +43,10 @@ export class ActionEvent extends Event implements ActionEventInterface {
 export class SuperAction implements SuperActionInterface {
 	#connected = false;
 	#params: SuperActionParamsInterface;
-	#target: EventTarget;
 	#dispatch = this.#unboundDispatch.bind(this);
 
 	constructor(params: SuperActionParamsInterface) {
-		this.#params = { ...params };
-		this.#target = params.target ?? params.host;
+		this.#params = params;
 
 		if (this.#params.connected) this.connect();
 	}
@@ -74,15 +72,12 @@ export class SuperAction implements SuperActionInterface {
 	}
 
 	#unboundDispatch(event: Event) {
-		dispatch(event, this.#target, this.#params.infix);
+		dispatch(this.#params, event);
 	}
 }
 
-function dispatch(
-	event: Event,
-	dispatchTarget: EventTarget,
-	infix: string = ":",
-) {
+function dispatch(params: SuperActionParamsInterface, event: Event) {
+	let { host, target: dispatchTarget = host, infix = ":" } = params;
 	let { type } = event;
 
 	for (let target of event.composedPath()) {
