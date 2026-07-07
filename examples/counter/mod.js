@@ -8,7 +8,7 @@ const countEl = document.querySelector("[count]");
 let count = parseFloat(countEl.textContent);
 if (Number.isNaN(count))
     count = 0;
-addEventListener("#action", function (e) {
+document.addEventListener("#action", function (e) {
     let { type } = e.action;
     if ("increment" === type) {
         count += 1;
