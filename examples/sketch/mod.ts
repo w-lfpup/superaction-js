@@ -15,7 +15,7 @@ const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
 
 // send actions to the offscreen canvas worker
-addEventListener("#action", function (e: ActionEventInterface) {
+document.addEventListener("#action", function (e: ActionEventInterface) {
 	let { type, event } = e.action;
 
 	// set color action needs input value

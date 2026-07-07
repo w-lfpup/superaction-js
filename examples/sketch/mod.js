@@ -9,7 +9,7 @@ const canvas = document.querySelector("canvas");
 const offscreenCanvas = canvas.transferControlToOffscreen();
 const resizeObserver = new ResizeObserver(sendCanvasParams);
 resizeObserver.observe(canvas);
-addEventListener("#action", function (e) {
+document.addEventListener("#action", function (e) {
     let { type, event } = e.action;
     if ("set_color" === type && event.target instanceof HTMLInputElement) {
         worker.postMessage({
