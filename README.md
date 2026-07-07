@@ -2,18 +2,18 @@
 
 A hypertext extension to upgrade your HTML with a declarative eventbus.
 
-(It's also a proof-of-concept for [hyperevents-js](https://github.com/w-lfpup/hyperevents-js)).
+(For a more full-featured experience, checkout [hyperevents-js](https://github.com/w-lfpup/hyperevents-js)).
 
 [![tests](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml/badge.svg)](https://github.com/w-lfpup/superaction-js/actions/workflows/tests.yml)
 
 ## Examples
 
 Superaction is little different compared to most frontend libraries. HTML declares
-what actions are sent to javascript-land similar to a classic eventbus.
+what actions are sent to javascript-land.
 
-Check out a simple click [counter](./examples/counter/) ([live example](https://w-lfpup.github.io/superaction-js/examples/counter/)).
+Check out a simple click [counter](./examples/counter/) ([live](https://w-lfpup.github.io/superaction-js/examples/counter/)).
 
-Then look at more interesting [sketch](./examples/sketch/) example and learn how to connect UI events to an offscreen canvas ([live example](https://w-lfpup.github.io/superaction-js/examples/sketch/)).
+Then look at more interesting [sketch](./examples/sketch/) example that sends UI events to a worker with an offscreen canvas ([live](https://w-lfpup.github.io/superaction-js/examples/sketch/)).
 
 ## Install
 
