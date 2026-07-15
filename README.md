@@ -120,9 +120,7 @@ Consider the following example:
 <body
 	click:="A"
 	click:stop-immediate-propagation>
-	<form
-		click:="B"
-		click:prevent-default>
+	<section click:="B">
 		<button
 			type=submit
 			click:="C">
@@ -134,7 +132,7 @@ Consider the following example:
 			click:stop-propagation>
 			^_^
 		</button>
-	</form>
+	</section>
 </body>
 ```
 
@@ -143,7 +141,6 @@ So when a person clicks the buttons above, the order of actions is:
 Click button C:
 
 - Action "C" dispatched
-- `preventDefault()` is called on the original `HTMLSubmitEvent`
 - Action "B" dispatched
 - Action propagation is stopped similar to `event.stopImmediatePropagation()`
 - Action "A" does _not_ dispatch
