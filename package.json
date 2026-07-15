@@ -2,7 +2,7 @@
 	"name": "@w-lfpup/superaction",
 	"type": "module",
 	"main": "dist/mod.js",
-	"description": "Turn the DOM into a declarative event-bus",
+	"description": "A declarative event-bus for the DOM",
 	"license": "BSD-3-Clause",
 	"version": "0.5.2",
 	"scripts": {
@@ -15,13 +15,13 @@
 		"test:browsers": "npx jackrabbit_webdriver jr.json tests/dist/mod.js",
 		"format": "npx prettier ./ --write"
 	},
-	"devDependencies": {
-		"@w-lfpup/jackrabbit": "^0.3.3",
-		"prettier": "^3.8.3",
-		"typescript": "^6.0.2"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/w-lfpup/superaction-js.git"
+	},
+	"devDependencies": {
+		"@w-lfpup/jackrabbit": "^0.3.3",
+		"prettier": "^3.9.5",
+		"typescript": "^7.0.2"
 	}
 }
